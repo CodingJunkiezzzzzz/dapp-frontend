@@ -58,4 +58,21 @@ export const Typography = styled.h1`
   color: ${(props) => (props.color ? props.color : '')};
 `;
 
+export const LayoutWrapper = styled.section`
+  width: 100%;
+  min-height: 100vh;
+  background: url('/images/dex_bg.svg') no-repeat;
+  background-position: bottom top;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  .container {
+    background: rgba(0, 0, 0, 0.9);
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    bottom: 0;
+    filter: blur(80px);
+  }
+`;
 export default GlobalStyle;

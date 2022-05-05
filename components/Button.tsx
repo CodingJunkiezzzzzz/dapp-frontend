@@ -16,7 +16,9 @@ interface IButton {
   hoverColor?: string;
   label?: string;
   icon?: string;
+  className: any;
 }
+
 const StyledButton = styled.button<IButton>`
   background: ${(props) => (props.bg ? props.bg : '#000')};
   color: ${(props) => (props.color ? props.color : '#000')};
