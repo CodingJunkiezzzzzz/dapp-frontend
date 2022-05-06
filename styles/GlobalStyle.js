@@ -40,6 +40,29 @@ body {
   .anticon-info-circle{
     display:none
   }
+  .ant-modal-footer{
+    display:none
+  }
+  .ant-modal-header{
+    color:var(--text-light)
+  }
+  .ant-modal-content,.ant-modal-header{
+    background:var(--text-black);
+    color:var(--text-white) !important
+  }
+  .ant-modal-content{
+    border-radius:10px ;
+  }
+  .ant-modal-header{
+    border-bottom:1px solid rgba(255,255,255,0.1) ;
+  }
+  .anticon {
+    background:#fff;
+    border-radius:50% ;
+    padding:5px;
+    color:var(--text-black) !important;
+
+  }
 }
 
 a{
