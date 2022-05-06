@@ -7,8 +7,36 @@ import {
   TokenInput,
 } from '../../components';
 import { Space } from '../../styles/GlobalStyle';
+import { Modal } from 'antd';
+import { useState } from 'react';
+
+const toggleSetting = () => {
+  Modal.info({
+    content: (
+      <div className="inner-modal">
+        <p>some messages...some messages...</p>
+        <p>some messages...some messages...</p>
+      </div>
+    ),
+    onOk() {},
+  });
+};
 
 const Swap = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showConnectModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <>
       <SwapWrapper>
@@ -25,6 +53,7 @@ const Swap = () => {
                 boxShadow: 'none',
                 color: '#fff',
               }}
+              onClick={toggleSetting}
             >
               <FiSettings />
             </div>
@@ -50,12 +79,23 @@ const Swap = () => {
                 borderRadius="20px"
                 bg="var(--btn-blue)"
                 hoverBg="var(--text-black)"
+                onClick={showConnectModal}
               />
             </div>
           </div>
         </div>
       </SwapWrapper>
       <SwapTokenInfo />
+      <Modal
+        title="Basic Modal"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
     </>
   );
 };
