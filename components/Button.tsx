@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 interface IButton {
@@ -17,6 +18,7 @@ interface IButton {
   label?: string;
   icon?: string;
   className?: any;
+  onClick: any;
 }
 
 const StyledButton = styled.button<IButton>`

@@ -25,8 +25,21 @@ body {
   margin: 0;
   font-family: 'Montserrat','Poppins', sans-serif;
   font-size:14px;
-  transition: all 0.5s ease;
   font-weight:600 ;
+
+  .ant-modal-mask {
+    background: rgba(0,0,0,0.3) !important;
+    backdrop-filter:blur(3px) ;
+  }
+  .ant-modal-content{
+    top:50px;
+  }
+  .modal-confirm-content{
+    margin-left: 0px
+  }
+  .anticon-info-circle{
+    display:none
+  }
 }
 
 a{
