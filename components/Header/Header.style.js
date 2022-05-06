@@ -62,7 +62,8 @@ color:#fff ;
 
 @media screen and (max-width:900px){
     padding:0px ;
-    left: ${({click}) => (click? 0: '-100%')};
+    left:0 ;
+    /* left: ${({click}) => (click? 0: '-100%')}; */
     position: fixed ;
     top:0 ;
     background:#fff ;
@@ -77,15 +78,25 @@ display:flex ;
 align-items:center ;
 justify-content: space-between;
 
+@media screen and (max-width:900px){
+    flex-direction:column ;
+}
+
 `
 export const SubDiv = styled.div`
 display:flex ;
 align-items:center ;
 
+@media screen and (max-width:900px){
+    flex-direction:column ;
+}
 `
 export const NavLink= styled.div`
-color:#ffff ;
+color:#FFFFFF !important;
+font-size:21px ;
 margin: 0 20px;
+
+
 `
 
 export const WalletBtn = styled.div` 
