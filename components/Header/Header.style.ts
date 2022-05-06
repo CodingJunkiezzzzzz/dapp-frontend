@@ -67,7 +67,7 @@ transition:all ease-out 0.3s;
 @media screen and (max-width:900px){
     padding:30px  10px;
     /* left:0 ; */
-    left: ${({click}) => (click? 0: '-100%')};
+      left: ${({click}) => (click? 0: '-100%')};
     position: fixed ;
     top:0 ;
     background:#fff ;

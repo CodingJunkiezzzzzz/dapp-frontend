@@ -4,6 +4,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Layout>
+        
       </Layout>
     </>
   );

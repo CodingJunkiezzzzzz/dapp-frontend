@@ -41,7 +41,7 @@ function Header() {
           <Div>
             <SubDiv>
               <NavLink>
-                <Link href='/'><a>Swap</a></Link>
+                <Link href='/swap'><a>Swap</a></Link>
                 </NavLink>
               <NavLink>
                 <Link href='/'><a>Bridge</a></Link>
