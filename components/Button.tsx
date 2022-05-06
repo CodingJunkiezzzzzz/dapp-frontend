@@ -16,7 +16,7 @@ interface IButton {
   hoverColor?: string;
   label?: string;
   icon?: string;
-  className: any;
+  className?: any;
 }
 
 const StyledButton = styled.button<IButton>`

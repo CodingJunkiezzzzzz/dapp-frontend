@@ -61,18 +61,32 @@ export const Typography = styled.h1`
 export const LayoutWrapper = styled.section`
   width: 100%;
   min-height: 100vh;
-  background: url('/images/dex_bg.svg') no-repeat;
+  background: url('/images/bg.svg') no-repeat;
   background-position: bottom top;
   background-size: cover;
   position: relative;
   overflow: hidden;
   .container {
-    background: rgba(0, 0, 0, 0.9);
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.03),
+      rgba(0, 0, 0, 0.7)
+    );
     width: 100%;
-    height: 200px;
+    height: 600px;
     position: absolute;
     bottom: 0;
-    filter: blur(80px);
+  }
+`;
+
+export const Space = styled.div`
+  margin: 10px 0;
+  text-align: center;
+
+  .space__wrapper {
+    img {
+      cursor: pointer;
+    }
   }
 `;
 export default GlobalStyle;

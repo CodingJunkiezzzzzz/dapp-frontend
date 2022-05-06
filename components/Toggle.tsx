@@ -20,10 +20,11 @@ const ToggleWrapper = styled.div`
       button {
         width: 100%;
         background: transparent;
+        font-weight: 600;
         &.active {
-          border: 2px solid var(--text-yellow);
           background: var(--text-black);
-          color: var(--text-light);
+          color: var(--text-yellow);
+          font-weight: 600;
         }
       }
     }

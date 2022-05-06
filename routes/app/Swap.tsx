@@ -1,5 +1,12 @@
-import { SwapHeader, SwapInputBox, SwapWrapper } from '../../styles/Swap.style';
-import { FiRotateCw, FiSettings, FiChevronDown } from 'react-icons/fi';
+import { SwapHeader, SwapWrapper } from '../../styles/Swap.style';
+import { FiRotateCw, FiSettings } from 'react-icons/fi';
+import {
+  Button,
+  ImageWrapper,
+  SwapTokenInfo,
+  TokenInput,
+} from '../../components';
+import { Space } from '../../styles/GlobalStyle';
 
 const Swap = () => {
   return (
@@ -8,45 +15,47 @@ const Swap = () => {
         <div className="swap__container">
           <SwapHeader>
             <div className="icon">
-              <FiRotateCw />
+              <FiRotateCw className="ico" />
             </div>
-            <div>Vefi dex</div>
-            <div className="icon">
+            <div>Vefi Dex</div>
+            <div
+              className="icon"
+              style={{
+                background: 'transparent',
+                boxShadow: 'none',
+                color: '#fff',
+              }}
+            >
               <FiSettings />
             </div>
           </SwapHeader>
-          <SwapInputBox>
-            <div className="swapInput__container">
-              <div className="swap__select">
-                <div className="swap__select__top">
-                  <p>From</p>
-                </div>
-                <div className="swap__select__info">
-                  <div className="swap__token__logo">
-                    <FiRotateCw />
-                  </div>
-                  <div className="swap__token__name">
-                    VEFI{' '}
-                    <span>
-                      <FiChevronDown />
-                    </span>
-                  </div>
-                  <div className="swap__token__btn">
-                    <span>Max</span>
-                    <span>Half</span>
-                  </div>
-                </div>
+          <TokenInput />
+          <div>
+            <Space>
+              <div className="space__wrapper">
+                <ImageWrapper
+                  src="/images/toggle.svg"
+                  width="30px"
+                  height="30px"
+                  alt="toggle"
+                />
               </div>
-              <div className="swap__price">
-                <div className="swap__select__top right">
-                  <p>Balance:(wallet not connected)</p>
-                </div>
-                <div className="swap__price__balance">0.00</div>
-              </div>
+            </Space>
+            <TokenInput />
+            <Space />
+            <div className="swap__button">
+              <Button
+                label="Connect Wallet"
+                padding="15px"
+                borderRadius="20px"
+                bg="var(--btn-blue)"
+                hoverBg="var(--text-black)"
+              />
             </div>
-          </SwapInputBox>
+          </div>
         </div>
       </SwapWrapper>
+      <SwapTokenInfo />
     </>
   );
 };
