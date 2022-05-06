@@ -3,13 +3,13 @@ import { FiRotateCw, FiSettings } from 'react-icons/fi';
 import {
   Button,
   ImageWrapper,
+  NetworkChain,
   SwapTokenInfo,
   TokenInput,
 } from '../../components';
-import { Space } from '../../styles/GlobalStyle';
+import { ModalWrapper, Space } from '../../styles/GlobalStyle';
 import { Modal } from 'antd';
 import { useState } from 'react';
-import { ModalWrapper } from '../../styles/Modal.style';
 
 const Swap = () => {
   const [isConnectModal, setIsConnectModal] = useState(true);
@@ -70,21 +70,52 @@ const Swap = () => {
           visible={isConnectModal}
           onOk={() => setIsConnectModal(!isConnectModal)}
           onCancel={() => setIsConnectModal(!isConnectModal)}
-          width="400px"
+          width="350px"
           mask={true}
         >
           <div className="modal__wrapper">
-            <div className="connect__wallet">
-              <div className="wallet__logo">
-                <ImageWrapper
-                  src="/images/metamask.svg"
-                  width="30px"
-                  height="30px"
-                  alt="metamask"
-                />
-              </div>
-              <div className="wallet__name">Metamask</div>
-            </div>
+            <NetworkChain
+              src="/images/metamask.svg"
+              width="30px"
+              height="30px"
+              alt="metamask"
+              label="Metamask"
+            />
+            <NetworkChain
+              src="/images/trustwallet.svg"
+              width="30px"
+              height="30px"
+              alt="Trustwallet"
+              label="Trustwallet"
+            />
+            <NetworkChain
+              src="/images/vefi.svg"
+              width="30px"
+              height="30px"
+              alt="Vefinetwork"
+              label="Vefinetwork"
+            />
+            <NetworkChain
+              src="/images/wallet.svg"
+              width="30px"
+              height="30px"
+              alt="Wallet"
+              label="Wallet"
+            />
+            <NetworkChain
+              src="/images/coin98.svg"
+              width="30px"
+              height="30px"
+              alt="Coin98"
+              label="Coin98"
+            />
+            <NetworkChain
+              src="/images/phantom.svg"
+              width="30px"
+              height="30px"
+              alt="Phantom"
+              label="Phantom"
+            />
           </div>
         </Modal>
         {/* Slippage Setting */}
