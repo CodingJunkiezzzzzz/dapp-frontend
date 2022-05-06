@@ -60,3 +60,20 @@ export const SwapHeader = styled.div`
     }
   }
 `;
+
+export const Inner = styled.div`  
+background-color:red ;
+
+`;
+
+export const Tab = styled.div`  
+display:flex ;
+align-items:center ;
+
+div{
+  width: 142px;
+height: 61px;
+background: #25233A;
+border-radius: 15px;
+}
+`

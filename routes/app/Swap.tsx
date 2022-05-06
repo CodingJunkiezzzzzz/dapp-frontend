@@ -1,4 +1,4 @@
-import { SwapHeader, SwapWrapper } from '../../styles/Swap.style';
+import { SwapHeader, SwapWrapper, Inner, Tab } from '../../styles/Swap.style';
 import { FiRotateCw, FiSettings } from 'react-icons/fi';
 import {
   Button,
@@ -13,10 +13,15 @@ import { useState } from 'react';
 const toggleSetting = () => {
   Modal.info({
     content: (
-      <div className="inner-modal">
-        <p>some messages...some messages...</p>
-        <p>some messages...some messages...</p>
-      </div>
+      <Inner>
+        <Tab>
+          <div></div>
+          <div></div>
+          <div></div>
+        </Tab>
+
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit ad itaque molestiae veniam ut delectus doloribus repellat aperiam! Maiores laborum natus doloremque, ea assumenda aut voluptatum exercitationem. Ipsum, autem et.
+      </Inner>
     ),
     onOk() {},
   });
@@ -86,16 +91,18 @@ const Swap = () => {
         </div>
       </SwapWrapper>
       <SwapTokenInfo />
+
       <Modal
         title="Basic Modal"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+        className='modal'
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        
+     
       </Modal>
+
     </>
   );
 };
