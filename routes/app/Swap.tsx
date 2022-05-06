@@ -9,33 +9,11 @@ import {
 import { Space } from '../../styles/GlobalStyle';
 import { Modal } from 'antd';
 import { useState } from 'react';
-
-const toggleSetting = () => {
-  Modal.info({
-    content: (
-      <div className="inner-modal">
-        <p>some messages...some messages...</p>
-        <p>some messages...some messages...</p>
-      </div>
-    ),
-    onOk() {},
-  });
-};
+import { ModalWrapper } from '../../styles/Modal.style';
 
 const Swap = () => {
   const [isConnectModal, setIsConnectModal] = useState(true);
-
-  const showConnectModal = () => {
-    setIsConnectModal(true);
-  };
-
-  const handleOk = () => {
-    setIsConnectModal(false);
-  };
-
-  const handleCancel = () => {
-    setIsConnectModal(false);
-  };
+  const [isSlipageModal, setIsSlipageModal] = useState(false);
 
   return (
     <>
@@ -53,7 +31,7 @@ const Swap = () => {
                 boxShadow: 'none',
                 color: '#fff',
               }}
-              onClick={toggleSetting}
+              onClick={() => setIsSlipageModal(!isSlipageModal)}
             >
               <FiSettings />
             </div>
@@ -79,25 +57,47 @@ const Swap = () => {
                 borderRadius="20px"
                 bg="var(--btn-blue)"
                 hoverBg="var(--text-black)"
-                onClick={showConnectModal}
+                onClick={() => setIsConnectModal(!isConnectModal)}
               />
             </div>
           </div>
         </div>
       </SwapWrapper>
       <SwapTokenInfo />
-      <Modal
-        title="Basic Modal"
-        visible={isConnectModal}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        width="400px"
-        mask={true}
-      >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal>
+      <ModalWrapper>
+        {/* Connect Wallet */}
+        <Modal
+          visible={isConnectModal}
+          onOk={() => setIsConnectModal(!isConnectModal)}
+          onCancel={() => setIsConnectModal(!isConnectModal)}
+          width="400px"
+          mask={true}
+        >
+          <div className="modal__wrapper">
+            <div className="connect__wallet">
+              <div className="wallet__logo">
+                <ImageWrapper
+                  src="/images/metamask.svg"
+                  width="30px"
+                  height="30px"
+                  alt="metamask"
+                />
+              </div>
+              <div className="wallet__name">Metamask</div>
+            </div>
+          </div>
+        </Modal>
+        {/* Slippage Setting */}
+        <Modal
+          visible={isSlipageModal}
+          onOk={() => setIsSlipageModal(!isSlipageModal)}
+          onCancel={() => setIsSlipageModal(!isSlipageModal)}
+          width="400px"
+          mask={true}
+        >
+          place the butons here
+        </Modal>
+      </ModalWrapper>
     </>
   );
 };

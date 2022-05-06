@@ -48,20 +48,25 @@ body {
   }
   .ant-modal-content,.ant-modal-header{
     background:var(--text-black);
-    color:var(--text-white) !important
+    color:var(--text-white) !important;
+    border: 1px solid rgba(218, 218, 218, 0.s);
   }
   .ant-modal-content{
     border-radius:10px ;
   }
   .ant-modal-header{
-    border-bottom:1px solid rgba(255,255,255,0.1) ;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+    border-top-right-radius:10px;
+    border-top-left-radius:10px;
   }
   .anticon {
     background:#fff;
     border-radius:50% ;
     padding:5px;
     color:var(--text-black) !important;
-
+  }
+  .modal__wrapper{
+    padding-top:50px;
   }
 }
 
