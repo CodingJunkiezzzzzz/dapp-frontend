@@ -47,22 +47,25 @@ body {
     color:var(--text-light)
   }
   .ant-modal-content,.ant-modal-header{
-
-    background: rgba(218, 218, 218, 0.1);
+    background:var(--text-black);
     color:var(--text-white) !important;
-    padding:0 !important;
+    border: 1px solid rgba(218, 218, 218, 0.s);
   }
   .ant-modal-content{
     border-radius: 20px;  }
   .ant-modal-header{
-    border-bottom:1px solid rgba(255,255,255,0.1) ;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+    border-top-right-radius:10px;
+    border-top-left-radius:10px;
   }
   .anticon {
     background:#fff;
     border-radius:50% ;
     padding:5px;
     color:var(--text-black) !important;
-
+  }
+  .modal__wrapper{
+    padding-top:50px;
   }
 }
 
