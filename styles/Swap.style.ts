@@ -60,3 +60,77 @@ export const SwapHeader = styled.div`
     }
   }
 `;
+
+export const Inner = styled.div`
+  .settings-text {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 23px;
+    line-height: 34px;
+    color: #ffffff;
+  }
+  .close-icon {
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      font-size: 18px;
+      font-weight: 30px;
+    }
+  }
+`;
+
+export const Tab = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+
+  div {
+    width: 145px;
+    height: 40px;
+    background: #25233a;
+    border-radius: 15px;
+    margin: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+export const NormalInput = styled.div`
+  margin-top: 20px;
+  p {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+  }
+`;
+
+export const InputCon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #25233a;
+  height: 40px;
+  border-radius: 10px;
+  padding: 0 10px;
+
+  input {
+    background: transparent;
+    flex-grow: 2;
+    height: inherit;
+  }
+  p {
+    display: flex;
+    align-items: center;
+  }
+`;

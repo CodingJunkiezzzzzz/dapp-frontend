@@ -85,6 +85,13 @@ h1{
 h2{
   font-family:'Poppins' ;
 }
+input{
+  outline:none ;
+  border:none ;
+}
+p{
+  margin:0 ;
+}
 `;
 
 export const Container = styled.div`
