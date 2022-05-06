@@ -1,5 +1,6 @@
 import { SwapHeader, SwapWrapper, Inner, Tab } from '../../styles/Swap.style';
 import { FiRotateCw, FiSettings } from 'react-icons/fi';
+import { FaTimes } from 'react-icons/fa';
 import {
   Button,
   ImageWrapper,
@@ -10,22 +11,7 @@ import { Space } from '../../styles/GlobalStyle';
 import { Modal } from 'antd';
 import { useState } from 'react';
 
-const toggleSetting = () => {
-  Modal.info({
-    content: (
-      <Inner>
-        <Tab>
-          <div></div>
-          <div></div>
-          <div></div>
-        </Tab>
 
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit ad itaque molestiae veniam ut delectus doloribus repellat aperiam! Maiores laborum natus doloremque, ea assumenda aut voluptatum exercitationem. Ipsum, autem et.
-      </Inner>
-    ),
-    onOk() {},
-  });
-};
 
 const Swap = () => {
   const [isConnectModal, setIsConnectModal] = useState(true);
@@ -58,7 +44,7 @@ const Swap = () => {
                 boxShadow: 'none',
                 color: '#fff',
               }}
-              onClick={toggleSetting}
+             
             >
               <FiSettings />
             </div>
@@ -109,3 +95,16 @@ const Swap = () => {
 };
 
 export default Swap;
+
+
+{/* <Inner>
+<div className="header-con">
+<div className="settings-text">Slippage Settings</div>
+ <div className="close-icon"><FaTimes className='icon'/></div>
+</div>
+ <Tab>
+   <div></div>
+   <div></div>
+   <div></div>
+ </Tab>
+</Inner> */}

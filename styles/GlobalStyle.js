@@ -47,12 +47,13 @@ body {
     color:var(--text-light)
   }
   .ant-modal-content,.ant-modal-header{
-    background:var(--text-black);
-    color:var(--text-white) !important
+
+    background: rgba(218, 218, 218, 0.1);
+    color:var(--text-white) !important;
+    padding:0 !important;
   }
   .ant-modal-content{
-    border-radius:10px ;
-  }
+    border-radius: 20px;  }
   .ant-modal-header{
     border-bottom:1px solid rgba(255,255,255,0.1) ;
   }
