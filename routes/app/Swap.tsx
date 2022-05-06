@@ -23,18 +23,18 @@ const toggleSetting = () => {
 };
 
 const Swap = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isConnectModal, setIsConnectModal] = useState(true);
 
   const showConnectModal = () => {
-    setIsModalVisible(true);
+    setIsConnectModal(true);
   };
 
   const handleOk = () => {
-    setIsModalVisible(false);
+    setIsConnectModal(false);
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);
+    setIsConnectModal(false);
   };
 
   return (
@@ -88,9 +88,11 @@ const Swap = () => {
       <SwapTokenInfo />
       <Modal
         title="Basic Modal"
-        visible={isModalVisible}
+        visible={isConnectModal}
         onOk={handleOk}
         onCancel={handleCancel}
+        width="400px"
+        mask={true}
       >
         <p>Some contents...</p>
         <p>Some contents...</p>
