@@ -1,4 +1,4 @@
-import { Container, Layout, ToggleBtn } from '../components';
+import { Container, Footer, Layout, ToggleBtn } from '../components';
 import { usePageQuery } from '../hooks';
 import Swap from '../routes/app/Swap';
 import { LayoutWrapper } from '../styles/GlobalStyle';
@@ -18,6 +18,7 @@ const Index = () => {
       <Layout>
         <LayoutWrapper>
           <ToggleBtn />
+          <div className="container"></div>
           <Container maxWidth="400px">
             {slug === 'swap' || slug === '/' ? (
               <>
@@ -29,6 +30,7 @@ const Index = () => {
               </>
             )}
           </Container>
+          <Footer />
         </LayoutWrapper>
       </Layout>
     </>
