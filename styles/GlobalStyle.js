@@ -58,4 +58,35 @@ export const Typography = styled.h1`
   color: ${(props) => (props.color ? props.color : '')};
 `;
 
+export const LayoutWrapper = styled.section`
+  width: 100%;
+  min-height: 100vh;
+  background: url('/images/bg.svg') no-repeat;
+  background-position: bottom top;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  .container {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.03),
+      rgba(0, 0, 0, 0.7)
+    );
+    width: 100%;
+    height: 600px;
+    position: absolute;
+    bottom: 0;
+  }
+`;
+
+export const Space = styled.div`
+  margin: 10px 0;
+  text-align: center;
+
+  .space__wrapper {
+    img {
+      cursor: pointer;
+    }
+  }
+`;
 export default GlobalStyle;
