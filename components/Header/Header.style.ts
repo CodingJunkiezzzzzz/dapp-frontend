@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-// type DivProps= {
-//     click : any
-//  }
+type DivProps ={
+    click : any
+ }
 
 export const HeaderWrapper = styled.div`
   width: 100%;
@@ -42,10 +42,13 @@ export const ButtonCon = styled.div`
     display:none ;
     align-items:center ;
     justify-content:center ;
+    background:#1673B9 ;
+    padding:10px ;
+    border-radius:5px ;
 
   .icon {
     color: #ffff;
-    font-size: 25px;
+    font-size: 20px;
     cursor: pointer;
   }
 
@@ -54,16 +57,17 @@ export const ButtonCon = styled.div`
       
   }
 `;
-export const NavLinks = styled.div`
+export const NavLinks = styled.div<DivProps>`
 padding:0 30px ;
 flex-grow:2;
 color:#fff ;
+transition:all ease-out 0.3s;
 
 
 @media screen and (max-width:900px){
-    padding:0px ;
-    left:0 ;
-    /* left: ${({click}) => (click? 0: '-100%')}; */
+    padding:30px  10px;
+    /* left:0 ; */
+    left: ${({click}) => (click? 0: '-100%')};
     position: fixed ;
     top:0 ;
     background:#fff ;
@@ -80,6 +84,7 @@ justify-content: space-between;
 
 @media screen and (max-width:900px){
     flex-direction:column ;
+    height:100% ;
 }
 
 `
@@ -96,7 +101,9 @@ color:#FFFFFF !important;
 font-size:21px ;
 margin: 0 20px;
 
-
+@media screen and (max-width:900px){
+    margin:10px 0 ;
+}
 `
 
 export const WalletBtn = styled.div` 
@@ -111,5 +118,9 @@ font-size:18px ;
 .icon{
     color: #ffff;
     font-size: 18px;
+}
+
+@media screen and (max-width:900px){
+    padding:10px  ;
 }
 `

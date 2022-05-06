@@ -16,24 +16,28 @@ import Image from "next/image";
 import {FaBars} from 'react-icons/fa'
 import {BiMouse} from 'react-icons/bi'
 import Link from "next/link";
+import { useState } from "react";
 
 
 
-const Header = () => {
-
+function Header() {
+  const [click, setClick] = useState(false);
+  const handleClick = () =>  setClick(!click);
+  // console.log('clicked')
+ 
 
 
   return (
     <HeaderWrapper>
     <Container>
-      <Nav>
+      <Nav >
         <MobileWrapper>
         <Logo> <Image src={LogoImg} alt="vefidex logo" /></Logo>
         <ButtonCon>
-              <FaBars className="icon"/>
+              <FaBars className="icon" onClick={handleClick}/>
         </ButtonCon>
         </MobileWrapper>
-        <NavLinks>
+        <NavLinks click={click}>
           <Div>
             <SubDiv>
               <NavLink>
