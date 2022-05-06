@@ -29,7 +29,7 @@ body {
 
   .ant-modal-mask {
     background: rgba(0,0,0,0.3) !important;
-    backdrop-filter:blur(3px) ;
+    backdrop-filter:blur(5px) ;
   }
   .ant-modal-content{
     top:50px;
@@ -47,7 +47,8 @@ body {
     color:var(--text-light)
   }
   .ant-modal-content,.ant-modal-header{
-    background:var(--text-black);
+    background: rgba(218, 218, 218, 0.1);
+    /* background:var(--text-black); */
     color:var(--text-white) !important;
     border: 1px solid rgba(218, 218, 218, 0.s);
   }
@@ -77,6 +78,13 @@ h1{
 }
 h2{
   font-family:'Poppins' ;
+}
+input{
+  outline:none ;
+  border:none ;
+}
+p{
+  margin:0 ;
 }
 `;
 

@@ -9,7 +9,9 @@ interface IButton {
   width?: string;
   display?: string;
   fontSize?: string;
+  fontWeight?: string;
   lineHeight?: string;
+  height?: string;
   alignItems?: string;
   justifyContent?: string;
   margin?: string;
@@ -18,7 +20,7 @@ interface IButton {
   label?: string;
   icon?: string;
   className?: any;
-  onClick: any;
+  onClick?: any;
 }
 
 const StyledButton = styled.button<IButton>`
@@ -37,6 +39,8 @@ const StyledButton = styled.button<IButton>`
   justify-content: ${(props) =>
     props.justifyContent ? props.justifyContent : 'center'};
   margin: ${(props) => (props.margin ? props.margin : '')};
+  font-weight:${(props) => (props.fontWeight ? props.fontWeight: '400')} ;
+  height:${(props) => (props.height ? props.height: '')} ;
   transition: all 300ms ease-out;
   .icon {
     font-size: 20px;

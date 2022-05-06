@@ -1,4 +1,4 @@
-import { SwapHeader, SwapWrapper, Inner, Tab } from '../../styles/Swap.style';
+import { SwapHeader, SwapWrapper, Inner, Tab, NormalInput, InputCon } from '../../styles/Swap.style';
 import { FiRotateCw, FiSettings } from 'react-icons/fi';
 import { FaTimes } from 'react-icons/fa';
 import {
@@ -96,7 +96,37 @@ const Swap = () => {
           width="400px"
           mask={true}
         >
-          place the butons here
+        <Inner>
+       <div className="header-con">
+       <div className="settings-text">Slippage Settings</div>
+       </div>
+        <Tab>
+          <div>{"0.1%"}</div>
+          <div>{"0.5%"}</div>
+          <div>{"1.0%"}</div>
+        </Tab>
+
+              <NormalInput>
+              <p>or input  normally</p>
+              <InputCon>
+              <input type="text" />
+              <p>{"0.00%"}</p>
+              </InputCon>
+              <Button 
+              margin='20px 0 0 0'
+              bg='#161525'
+              label='Save Settings'
+              color='#FFFFFF'
+              justifyContent='center'
+              width='100%'
+              borderRadius='10px'
+              fontSize='18px'
+              fontWeight='700'
+              height='40px'
+              />
+              </NormalInput>
+
+      </Inner>
         </Modal>
       </ModalWrapper>
     </>
@@ -105,15 +135,3 @@ const Swap = () => {
 
 export default Swap;
 
-
-{/* <Inner>
-<div className="header-con">
-<div className="settings-text">Slippage Settings</div>
- <div className="close-icon"><FaTimes className='icon'/></div>
-</div>
- <Tab>
-   <div></div>
-   <div></div>
-   <div></div>
- </Tab>
-</Inner> */}
