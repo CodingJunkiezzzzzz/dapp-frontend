@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const SwapWrapper = styled.div`
   margin-top: 30px;
+  margin-bottom: 50px;
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.5);
   width: 100%;
@@ -14,7 +15,6 @@ export const SwapWrapper = styled.div`
 
   .swap__button {
     width: 100%;
-
     margin-top: 50px;
     display: flex;
     align-items: center;

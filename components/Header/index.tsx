@@ -9,14 +9,13 @@ import {
   Div,
   SubDiv,
   NavLink,
-  WalletBtn,
 } from './Header.style';
-import LogoImg from '../../assets/logo.png';
-import Image from 'next/image';
 import { FaBars } from 'react-icons/fa';
 import { BiMouse } from 'react-icons/bi';
 import Link from 'next/link';
 import { useState } from 'react';
+import Button from '../Button';
+import ImageWrapper from '../Image';
 
 function Header() {
   const [click, setClick] = useState(false);
@@ -28,8 +27,16 @@ function Header() {
         <Nav>
           <MobileWrapper>
             <Logo>
-              {' '}
-              <Image src={LogoImg} alt="vefidex logo" />
+              <Link href="/">
+                <a>
+                  <ImageWrapper
+                    src="/images/logo.png"
+                    width="100%"
+                    height="40px"
+                    alt="vefidex"
+                  />
+                </a>
+              </Link>
             </Logo>
             <ButtonCon>
               <FaBars className="icon" onClick={handleClick} />
@@ -59,11 +66,15 @@ function Header() {
                   </Link>
                 </NavLink>
               </SubDiv>
-
-              <WalletBtn>
-                <BiMouse className="icon" />
-                Connect Wallet
-              </WalletBtn>
+              <Button
+                label="Connect Wallet"
+                bg="#1673b9"
+                borderRadius="20px"
+                padding="5px 15px"
+                color="#fff"
+                hoverColor="var(--text-yellow)"
+                icon={<BiMouse className="icon" />}
+              />
             </Div>
           </NavLinks>
         </Nav>

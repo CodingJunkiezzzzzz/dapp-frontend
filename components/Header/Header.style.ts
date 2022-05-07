@@ -6,12 +6,15 @@ type DivProps = {
 
 export const HeaderWrapper = styled.div`
   width: 100%;
-  background: linear-gradient(90.02deg, #000000 5.44%, #161525 54.52%);
+  background: var(--text-black);
+  height: 60px;
+  display: flex;
+  align-items: center;
 `;
 export const Nav = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px 30px;
+
   justify-content: space-between;
 
   @media screen and (max-width: 900px) {
@@ -19,7 +22,13 @@ export const Nav = styled.div`
     flex-direction: column;
   }
 `;
-export const Logo = styled.div``;
+export const Logo = styled.div`
+  img {
+    width: 100%;
+    height: 40px;
+    object-fit: contain;
+  }
+`;
 
 export const MobileWrapper = styled.div`
   display: flex;
@@ -51,7 +60,7 @@ export const ButtonCon = styled.div`
   }
 `;
 export const NavLinks = styled.div<DivProps>`
-  padding: 0 30px;
+  padding: 0 10px;
   flex-grow: 2;
   color: #fff;
   transition: all ease-out 0.3s;
@@ -88,30 +97,16 @@ export const SubDiv = styled.div`
   }
 `;
 export const NavLink = styled.div`
-  color: #ffffff !important;
-  font-size: 21px;
-  margin: 0 20px;
+  font-size: 1rem;
+  margin: 0 10px;
+  a {
+    color: var(--text-white) !important;
 
+    :hover {
+      color: var(--btn-blue) !important;
+    }
+  }
   @media screen and (max-width: 900px) {
     margin: 10px 0;
-  }
-`;
-
-export const WalletBtn = styled.div`
-  display: flex;
-  align-items: center;
-  background: #1673b9;
-  padding: 10px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 18px;
-
-  .icon {
-    color: #ffff;
-    font-size: 18px;
-  }
-
-  @media screen and (max-width: 900px) {
-    padding: 10px;
   }
 `;

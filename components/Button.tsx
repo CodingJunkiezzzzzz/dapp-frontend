@@ -18,7 +18,7 @@ interface IButton {
   hoverBg?: string;
   hoverColor?: string;
   label?: string;
-  icon?: string;
+  icon?: any;
   className?: any;
   onClick?: any;
 }
