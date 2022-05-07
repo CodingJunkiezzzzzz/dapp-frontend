@@ -1,19 +1,26 @@
-import { SwapHeader, SwapWrapper, Inner, Tab, NormalInput, InputCon } from '../../styles/Swap.style';
+import {
+  SwapHeader,
+  SwapWrapper,
+  Inner,
+  Tab,
+  NormalInput,
+  InputCon,
+} from '../../styles/Swap.style';
 import { FiRotateCw, FiSettings } from 'react-icons/fi';
-import { FaTimes } from 'react-icons/fa';
 import {
   Button,
   ImageWrapper,
   NetworkChain,
   SwapTokenInfo,
   TokenInput,
+  TokenList,
 } from '../../components';
 import { ModalWrapper, Space } from '../../styles/GlobalStyle';
 import { Modal } from 'antd';
 import { useState } from 'react';
 
 const Swap = () => {
-  const [isConnectModal, setIsConnectModal] = useState(true);
+  const [isConnectModal, setIsConnectModal] = useState(false);
   const [isSlipageModal, setIsSlipageModal] = useState(false);
 
   return (
@@ -127,42 +134,41 @@ const Swap = () => {
           width="400px"
           mask={true}
         >
-        <Inner>
-       <div className="header-con">
-       <div className="settings-text">Slippage Settings</div>
-       </div>
-        <Tab>
-          <div>{"0.1%"}</div>
-          <div>{"0.5%"}</div>
-          <div>{"1.0%"}</div>
-        </Tab>
+          <Inner>
+            <div className="header-con">
+              <div className="settings-text">Slippage Settings</div>
+            </div>
+            <Tab>
+              <div>{'0.1%'}</div>
+              <div>{'0.5%'}</div>
+              <div>{'1.0%'}</div>
+            </Tab>
 
-              <NormalInput>
-              <p>or input  normally</p>
+            <NormalInput>
+              <p>or input normally</p>
               <InputCon>
-              <input type="text" />
-              <p>{"0.00%"}</p>
+                <input type="text" />
+                <p>{'0.00%'}</p>
               </InputCon>
-              <Button 
-              margin='20px 0 0 0'
-              bg='#161525'
-              label='Save Settings'
-              color='#FFFFFF'
-              justifyContent='center'
-              width='100%'
-              borderRadius='10px'
-              fontSize='18px'
-              fontWeight='700'
-              height='40px'
+              <Button
+                margin="20px 0 0 0"
+                bg="#161525"
+                label="Save Settings"
+                color="#FFFFFF"
+                justifyContent="center"
+                width="100%"
+                borderRadius="10px"
+                fontSize="18px"
+                fontWeight="700"
+                height="40px"
               />
-              </NormalInput>
-
-      </Inner>
+            </NormalInput>
+          </Inner>
         </Modal>
+        <TokenList />
       </ModalWrapper>
     </>
   );
 };
 
 export default Swap;
-

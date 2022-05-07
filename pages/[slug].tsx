@@ -19,7 +19,7 @@ const Index = () => {
               </>
             ) : (
               <>
-                <h1>Liquidity Page</h1>
+                <Swap />
               </>
             )}
           </Container>

@@ -31,7 +31,7 @@ body {
     backdrop-filter: blur(3px);
   }
   .ant-modal-content {
-    top: 50px;
+    top: 20px;
   }
   .modal-confirm-content {
     margin-left: 0px;
@@ -65,16 +65,18 @@ body {
     padding: 5px;
     color: var(--text-black) !important;
   }
-
+  .ant-model-body{
+      padding:24px;
+    }
   .modal__wrapper {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     padding-top: 50px;
     justify-content:space-between ;
-
+  } 
   }
-}
+
 
 a{
   text-decoration: none;
