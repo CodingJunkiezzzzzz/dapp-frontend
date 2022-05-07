@@ -57,4 +57,7 @@ export const LiquidityWrapper = styled.div`
       font-weight: 600;
     }
   }
+  .not__connected {
+    margin-bottom: 50px;
+  }
 `;

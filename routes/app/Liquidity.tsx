@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { FaCog, FaPlus, FaRecycle } from 'react-icons/fa';
+import { FaCog, FaPlus } from 'react-icons/fa';
+import { IoMdRefreshCircle } from 'react-icons/io';
 import { Button } from '../../components';
 import { LiquidityWrapper } from '../../styles/Liquidity.style';
 import { SwapWrapper } from '../../styles/Swap.style';
 
 const Liquidity = () => {
-  const [walletConnected, setWalletConnected] = useState(false);
+  const [walletConnected] = useState(false);
   return (
     <>
       <SwapWrapper>
@@ -17,7 +18,7 @@ const Liquidity = () => {
             </div>
             <div className="setting">
               <FaCog />
-              <FaRecycle />
+              <IoMdRefreshCircle />
             </div>
           </div>
           {walletConnected ? (
@@ -40,7 +41,7 @@ const Liquidity = () => {
             </>
           ) : (
             <>
-              <div className="liquidity__body">
+              <div className="liquidity__body not__connected">
                 <div className="wallet__not__connected">
                   <div className="inner__wrapper">
                     <h3>Connect to a wallet to view your liquidity</h3>
