@@ -12,6 +12,7 @@ interface IButton {
   fontWeight?: string;
   lineHeight?: string;
   height?: string;
+  border?: string;
   alignItems?: string;
   justifyContent?: string;
   margin?: string;
@@ -26,7 +27,7 @@ interface IButton {
 const StyledButton = styled.button<IButton>`
   background: ${(props) => (props.bg ? props.bg : '#000')};
   color: ${(props) => (props.color ? props.color : '#000')};
-  border: none;
+  border: ${(props) => (props.border ? props.border : 'none')};
   padding: ${(props) => (props.padding ? props.padding : '10px 20px;')};
   border-radius: ${(props) =>
     props.borderRadius ? props.borderRadius : '5px'};

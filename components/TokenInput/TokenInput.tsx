@@ -8,7 +8,7 @@ const TokenInput = () => {
     <SwapInputBox>
       <div className="swapInput__container">
         <div className="swap__select">
-          <div className="swap__select__top">
+          <div className="swap__select__top left">
             <p>From</p>
           </div>
           <div className="swap__select__info">

@@ -11,7 +11,6 @@ export const SwapInputBox = styled.div`
     justify-content: space-between;
     padding: 10px;
     align-items: center;
-    line-height: 10px;
     gap: 5px;
   }
   .swap__select {
@@ -23,6 +22,9 @@ export const SwapInputBox = styled.div`
   }
   .right {
     text-align: right;
+  }
+  .left p {
+    margin-bottom: 5px;
   }
   .swap__select__info {
     display: flex;
