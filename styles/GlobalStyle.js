@@ -26,49 +26,57 @@ body {
   font-family: 'Montserrat','Poppins', sans-serif;
   font-size:14px;
   font-weight:600 ;
-
   .ant-modal-mask {
-    background: rgba(0,0,0,0.3) !important;
-    backdrop-filter:blur(5px) ;
+    background: rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(3px);
   }
-  .ant-modal-content{
-    top:50px;
+  .ant-modal-content {
+    top: 20px;
   }
-  .modal-confirm-content{
-    margin-left: 0px
+  .modal-confirm-content {
+    margin-left: 0px;
   }
-  .anticon-info-circle{
-    display:none
+  .anticon-info-circle {
+    display: none;
   }
-  .ant-modal-footer{
-    display:none
+  .ant-modal-footer {
+    display: none;
   }
-  .ant-modal-header{
-    color:var(--text-light)
+  .ant-modal-header {
+    color: var(--text-light);
   }
-  .ant-modal-content,.ant-modal-header{
-    background: rgba(218, 218, 218, 0.1);
-    /* background:var(--text-black); */
-    color:var(--text-white) !important;
-    border: 1px solid rgba(218, 218, 218, 0.s);
+  .ant-modal-content,
+  .ant-modal-header {
+    background: var(--text-black);
+    color: var(--text-white) !important;
+    border: 1px solid rgba(218, 218, 218, 0s);
   }
-  .ant-modal-content{
-    border-radius: 20px;  }
-  .ant-modal-header{
-    border-bottom:1px solid rgba(255,255,255,0.1);
-    border-top-right-radius:10px;
-    border-top-left-radius:10px;
+  .ant-modal-content {
+    border-radius: 10px;
+  }
+  .ant-modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
   }
   .anticon {
-    background:#fff;
-    border-radius:50% ;
-    padding:5px;
-    color:var(--text-black) !important;
+    background: #fff;
+    border-radius: 50%;
+    padding: 5px;
+    color: var(--text-black) !important;
   }
-  .modal__wrapper{
-    padding-top:50px;
+  .ant-model-body{
+      padding:24px;
+    }
+  .modal__wrapper {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 50px;
+    justify-content:space-between ;
+  } 
   }
-}
+
 
 a{
   text-decoration: none;
@@ -137,4 +145,24 @@ export const Space = styled.div`
     }
   }
 `;
+export const ModalWrapper = styled.div``;
+export const ConnectWallet = styled.div`
+  display: flex;
+  background: rgba(27, 30, 36, 0.2);
+  border: 0.5px solid rgba(255, 248, 248, 0.35);
+  border-radius: 15px;
+  width: 49%;
+  padding: 10px;
+  gap: 10px;
+  cursor: pointer;
+  align-items: center;
+  transition: all 0.3s;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  &:hover {
+    border: 1px solid var(--text-yellow);
+    color: var(--text-yellow);
+  }
+`;
+
 export default GlobalStyle;

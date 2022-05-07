@@ -18,7 +18,7 @@ interface IButton {
   hoverBg?: string;
   hoverColor?: string;
   label?: string;
-  icon?: string;
+  icon?: any;
   className?: any;
   onClick?: any;
 }
@@ -39,8 +39,8 @@ const StyledButton = styled.button<IButton>`
   justify-content: ${(props) =>
     props.justifyContent ? props.justifyContent : 'center'};
   margin: ${(props) => (props.margin ? props.margin : '')};
-  font-weight:${(props) => (props.fontWeight ? props.fontWeight: '400')} ;
-  height:${(props) => (props.height ? props.height: '')} ;
+  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : '400')};
+  height: ${(props) => (props.height ? props.height : '')};
   transition: all 300ms ease-out;
   .icon {
     font-size: 20px;

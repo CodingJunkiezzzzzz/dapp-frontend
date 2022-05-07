@@ -9,3 +9,4 @@ export { default as ImageWrapper } from './Image';
 export { default as Container } from './Container';
 export { default as TokenInput } from './TokenInput/TokenInput';
 export { default as SwapTokenInfo } from './SwapTokenInfo/SwapTokenInfo';
+export { default as NetworkChain } from './Chains/ConnectWallet';

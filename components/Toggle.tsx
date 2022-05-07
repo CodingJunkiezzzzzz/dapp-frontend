@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 import Button from './Button';
-
+import { usePageQuery } from '../hooks';
 const ToggleWrapper = styled.div`
   width: 200px;
   margin: 0px auto;
@@ -31,16 +32,29 @@ const ToggleWrapper = styled.div`
   }
 `;
 const Toggle = () => {
+  const router = useRouter();
+  const { slug } = usePageQuery();
+
   return (
     <>
       <ToggleWrapper>
         <div className="toogleContainer">
           <div className="toggleBtn">
             <div className="btn btn1">
-              <Button label="Swap" borderRadius="20px" className="active" />
+              <Button
+                label="Swap"
+                borderRadius="20px"
+                className={slug === 'swap' && 'active'}
+                onClick={() => router.push('/swap')}
+              />
             </div>
             <div className="btn btn2">
-              <Button label="Liquidity" borderRadius="20px" className="" />
+              <Button
+                label="Liquidity"
+                borderRadius="20px"
+                className={slug === 'liquidity' && 'active'}
+                onClick={() => router.push('/liquidity')}
+              />
             </div>
           </div>
         </div>

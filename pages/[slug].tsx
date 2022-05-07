@@ -1,6 +1,7 @@
 import { Container, Footer, Layout, ToggleBtn } from '../components';
 import { usePageQuery } from '../hooks';
-import Swap from '../routes/app/Swap';
+import { Liquidity, Swap } from '../routes';
+
 import { LayoutWrapper } from '../styles/GlobalStyle';
 
 const Index = () => {
@@ -19,7 +20,7 @@ const Index = () => {
               </>
             ) : (
               <>
-                <h1>Liquidity Page</h1>
+                <Liquidity />
               </>
             )}
           </Container>

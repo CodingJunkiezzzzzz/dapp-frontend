@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const SwapWrapper = styled.div`
   margin-top: 30px;
+  margin-bottom: 50px;
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.5);
   width: 100%;
@@ -14,7 +15,6 @@ export const SwapWrapper = styled.div`
 
   .swap__button {
     width: 100%;
-
     margin-top: 50px;
     display: flex;
     align-items: center;
@@ -61,83 +61,76 @@ export const SwapHeader = styled.div`
   }
 `;
 
-export const Inner = styled.div`  
+export const Inner = styled.div`
+  .settings-text {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 23px;
+    line-height: 34px;
+    color: #ffffff;
+  }
+  .close-icon {
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.settings-text{
-  font-family: 'Poppins';
-font-style: normal;
-font-weight: 700;
-font-size: 23px;
-line-height: 34px;
-color: #FFFFFF;
-}
-.close-icon{
-  border-radius:50% ;
-  background:#FFFFFF ;
-  padding:5px ;
-  display:flex ;
-  align-items:center ;
-  justify-content:center ;
-
-.icon{
-font-size:18px ;
-font-weight: 30px;
-
-}
-}
-
+    .icon {
+      font-size: 18px;
+      font-weight: 30px;
+    }
+  }
 `;
 
-export const Tab = styled.div`  
-display:flex ;
-align-items:center ;
-margin-top:10px ;
+export const Tab = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
 
-div{
-  width: 145px;
-height: 40px;
-background: #25233A;
-border-radius: 15px;
-margin:0 20px ;
-display:flex ;
-align-items:center ;
-justify-content:center ;
-}
-`
+  div {
+    width: 145px;
+    height: 40px;
+    background: #25233a;
+    border-radius: 15px;
+    margin: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
 
-export const NormalInput = styled.div` 
-margin-top:20px ;
-p{
-  font-family: 'Poppins';
-font-style: normal;
-font-weight: 600;
-font-size: 16px;
-line-height: 24px;
-color: #FFFFFF;
-}
+export const NormalInput = styled.div`
+  margin-top: 20px;
+  p {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+  }
+`;
 
-`
+export const InputCon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #25233a;
+  height: 40px;
+  border-radius: 10px;
+  padding: 0 10px;
 
-export const InputCon = styled.div`  
-display:flex ;
-align-items:center ;
-justify-content:space-between ;
-width:100% ;
-background: #25233A;
-height:40px ;
-border-radius:10px ;
-padding:0 10px ;
-
-input{
-background:transparent ;
-flex-grow:2 ;
-height:inherit ;
-
-}
-p{
-  display:flex ;
-  align-items:center ;
-}
-
-
-`
+  input {
+    background: transparent;
+    flex-grow: 2;
+    height: inherit;
+  }
+  p {
+    display: flex;
+    align-items: center;
+  }
+`;
