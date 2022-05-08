@@ -3,13 +3,17 @@ import React from 'react';
 import { FiChevronDown } from 'react-icons/fi';
 import { ImageWrapper } from '../../components';
 import { SwapInputBox } from './TokenInput.style';
-const TokenInput = () => {
+
+interface ITokenInput {
+  type?: string;
+}
+const TokenInput = ({ type }: ITokenInput) => {
   return (
     <SwapInputBox>
       <div className="swapInput__container">
         <div className="swap__select">
           <div className="swap__select__top left">
-            <p>From</p>
+            <p>{type}</p>
           </div>
           <div className="swap__select__info">
             <div className="swap__token__logo">

@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
   --input-dark:#0C0B16;
   --text-yellow:#FFEB82;
   --text-black:#161525;
-  --text-light:#C6C3C3;
+  --text-light:#fff;
   
 }
 

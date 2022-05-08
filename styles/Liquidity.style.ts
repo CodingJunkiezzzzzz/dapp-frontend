@@ -47,10 +47,10 @@ export const LiquidityWrapper = styled.div`
   .liquidity__btn {
     display: flex;
     justify-content: center;
-
+    padding-top: 35px;
     button {
       width: 90%;
-      padding: 13px 0;
+      padding: 15px 0;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -60,4 +60,60 @@ export const LiquidityWrapper = styled.div`
   .not__connected {
     margin-bottom: 50px;
   }
+`;
+
+export const AddLiquidity = styled.div`
+  .ant-space {
+    display: block;
+    padding: 5px 0;
+  }
+  .space__wrapper {
+    justify-content: center;
+    display: block;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+  }
+`;
+
+export const LiquidityTokenInfo = styled.div`
+  .liquidity__token__info__wrapper {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    .title {
+      justify-content: center;
+      text-align: center;
+    }
+    .details {
+      display: flex;
+      gap: 5px;
+      width: 100%;
+      justify-content: space-between;
+      .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        span:first-child {
+          margin-bottom: -3px;
+        }
+        span:last-child {
+          font-size: 0.7rem;
+          font-weight: 800;
+        }
+      }
+    }
+  }
+`;
+
+export const TokenDisclaimer = styled.div`
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-top: -25px;
+  color: var(--text-black);
+  font-size: 0.8rem;
 `;
