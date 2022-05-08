@@ -44,7 +44,7 @@ const Swap = () => {
               <FiSettings />
             </div>
           </SwapHeader>
-          <TokenInput />
+          <TokenInput type="From" />
           <div>
             <Space>
               <div className="space__wrapper">
@@ -56,7 +56,7 @@ const Swap = () => {
                 />
               </div>
             </Space>
-            <TokenInput />
+            <TokenInput type="To" />
             <Space />
             <div className="swap__button">
               <Button
@@ -65,6 +65,8 @@ const Swap = () => {
                 borderRadius="20px"
                 bg="var(--btn-blue)"
                 hoverBg="var(--text-black)"
+                color="var(--text-white)"
+                hoverColor="var(--text-yellow)"
                 onClick={() => setIsConnectModal(!isConnectModal)}
               />
             </div>

@@ -22,11 +22,16 @@ export const SwapWrapper = styled.div`
 
     button {
       width: 90%;
-      border: 1.5px solid var(--text-yellow);
       font-size: 1rem;
-      color: #fff;
+
       font-weight: 600;
     }
+  }
+
+  @media screen and (max-width: 760px) {
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
   }
 `;
 
