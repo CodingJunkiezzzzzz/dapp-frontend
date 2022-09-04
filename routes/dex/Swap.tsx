@@ -1,14 +1,85 @@
 import React, { useState } from 'react';
-import { FiSettings, FiChevronDown } from 'react-icons/fi';
+import { FiSettings, FiChevronDown, FiMaximize2, FiMinimize2 } from 'react-icons/fi';
 import { IoMdRefreshCircle } from 'react-icons/io';
-import { MdSwapVerticalCircle } from 'react-icons/md';
+import { MdSwapVerticalCircle, MdOutlineSwapHoriz } from 'react-icons/md';
 import Image from 'next/image';
+import Chart from '../../components/Chart';
+import ChartToggleButton from '../../components/Button/ChartToggleButton';
+
+enum ChartPeriod {
+  DAY,
+  WEEK,
+  MONTH,
+  YEAR
+}
 
 export default function Swap() {
   const [val1, setVal1] = useState<number>(0.0);
   const [val2, setVal2] = useState<number>(0.0);
-  return (
-    <div className="bg-white/50 rounded-[20px] px-[19px] flex justify-center items-center py-[19px]">
+  const [isChartAreaMaximized, setIsChartAreaMaximized] = useState<boolean>(false);
+  const [chartPeriod, setChartPeriod] = useState<ChartPeriod>(ChartPeriod.DAY);
+
+  const ChartView = () => (
+    <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] pt-[32px] flex justify-center items-center h-full">
+      <div className={`flex flex-col flex-1 justify-evenly items-center w-[757px] ${isChartAreaMaximized ? 'h-screen' : 'h-full'}`}>
+        <div className="flex justify-between items-center w-full">
+          <div className="flex justify-between items-center w-1/3">
+            <div className="flex justify-center w-1/2">
+              <Image src="/images/vefi.png" alt="vefi_logo" width={30} height={30} className="rounded-[50px]" />
+              <Image src="/images/brise.png" alt="brise_logo" width={30} height={30} className="rounded-50px" />
+            </div>
+            <div className="flex justify-center">
+              <span className="text-white text-[16px] font-[700]">VEF/BRISE</span>
+            </div>
+            <div className="flex justify-center">
+              <button className="bg-transparent text-[white] flex justify-center text-[30px]">
+                <MdOutlineSwapHoriz />
+              </button>
+            </div>
+            <div className="flex justify-center">
+              <button className="bg-[#ffffff]/[.5] text-[#fff] text-[16px] font-[700] py-[7px] px-[12px] border-[#ffeb82] border-[1px] rounded-[5px]">
+                <span>Basic</span>
+              </button>
+            </div>
+          </div>
+          <button onClick={() => setIsChartAreaMaximized((val) => !val)} className="bg-transparent text-[white] flex justify-center text-[20px]">
+            {isChartAreaMaximized ? <FiMinimize2 /> : <FiMaximize2 />}
+          </button>
+        </div>
+        <div className="flex justify-between items-center w-full mt-[23px]">
+          <div className="flex justify-between items-center w-2/5">
+            <div className="flex justify-center w-1/3">
+              <span className="text-white font-[700] text-[40px]">68.01</span>
+            </div>
+            <div className="flex justify-center w-1/3">
+              <span className="text-white text-[16px] font-[700]">VEF/BRISE</span>
+            </div>
+            <div className="flex justify-center w-1/3">
+              <span className="text-[#da004e] font-[700] text-[16px]">-1.638(-2.35%)</span>
+            </div>
+          </div>
+          <div className="flex justify-center bg-[#d9d9d9]/[.1] border-[#d9d9d9] border-[1px] rounded-[18.5px]">
+            <ChartToggleButton onClick={() => setChartPeriod(ChartPeriod.DAY)} isActive={chartPeriod === ChartPeriod.DAY}>
+              <span>24H</span>
+            </ChartToggleButton>
+            <ChartToggleButton onClick={() => setChartPeriod(ChartPeriod.WEEK)} isActive={chartPeriod === ChartPeriod.WEEK}>
+              <span>1W</span>
+            </ChartToggleButton>
+            <ChartToggleButton onClick={() => setChartPeriod(ChartPeriod.MONTH)} isActive={chartPeriod === ChartPeriod.MONTH}>
+              <span>1M</span>
+            </ChartToggleButton>
+            <ChartToggleButton onClick={() => setChartPeriod(ChartPeriod.YEAR)} isActive={chartPeriod === ChartPeriod.YEAR}>
+              <span>1Y</span>
+            </ChartToggleButton>
+          </div>
+        </div>
+        <Chart />
+      </div>
+    </div>
+  );
+
+  const FormView = () => (
+    <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] flex justify-center items-center py-[19px]">
       <div className="flex flex-col justify-evenly items-center w-full">
         <div className="flex justify-between w-full">
           <div>
@@ -51,7 +122,7 @@ export default function Swap() {
             </div>
           </div>
           <div className="flex justify-center items-center my-[9.5px]">
-            <button className="bg-transparent text-[#ffeb82] text-[30px]">
+            <button className="bg-transparent text-[#ffffff] text-[30px]">
               <MdSwapVerticalCircle />
             </button>
           </div>
@@ -86,6 +157,16 @@ export default function Swap() {
         <button className="flex justify-center items-center bg-[#1673b9] py-[14px] px-[10px] rounded-[19px] text-[18px] text-white w-full mt-[54px]">
           <span>Connect Wallet</span>
         </button>
+      </div>
+    </div>
+  );
+  return (
+    <div className="flex flex-row justify-between">
+      <div className="hidden md:block md:mx-[79px]">
+        <ChartView />
+      </div>
+      <div className="block">
+        <FormView />
       </div>
     </div>
   );
