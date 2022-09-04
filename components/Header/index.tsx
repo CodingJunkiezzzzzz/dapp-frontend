@@ -55,7 +55,7 @@ export default function Header() {
           <div className="lg:flex flex-row justify-between hidden">
             <div className="px-[23px] cursor-pointer">
               <ActiveLink activeClassName="border-b-[3px] border-b-[#46aefc]" href="/dex">
-                <span className="text-white text-[21px] font-[600]">Swap</span>
+                <span className="text-white text-[21px] font-[600]">Trade</span>
               </ActiveLink>
             </div>
             <div className="px-[23px] cursor-pointer">

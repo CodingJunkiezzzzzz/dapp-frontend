@@ -8,16 +8,16 @@ export default function Swap() {
   const [val1, setVal1] = useState<number>(0.0);
   const [val2, setVal2] = useState<number>(0.0);
   return (
-    <div className="bg-white/50 rounded-[20px] px-[19px] flex justify-center items-center py-[19px] w-[312px] lg:w-[492px]">
+    <div className="bg-white/50 rounded-[20px] px-[19px] flex justify-center items-center py-[19px]">
       <div className="flex flex-col justify-evenly items-center w-full">
         <div className="flex justify-between w-full">
           <div>
-            <button className="bg-transparent text-white text-[20px]">
+            <button className="bg-transparent text-white text-[23px]">
               <IoMdRefreshCircle />
             </button>
           </div>
           <div>
-            <button className="bg-transparent text-white text-[20px]">
+            <button className="bg-transparent text-white text-[23px]">
               <FiSettings />
             </button>
           </div>
