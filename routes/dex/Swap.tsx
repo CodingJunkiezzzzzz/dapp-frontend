@@ -4,6 +4,7 @@ import { IoMdRefreshCircle } from 'react-icons/io';
 import { MdSwapVerticalCircle, MdOutlineSwapHoriz } from 'react-icons/md';
 import Image from 'next/image';
 import Chart from '../../components/Chart';
+import SwapSettingsModal from '../../components/SwapSettingsModal';
 import ChartToggleButton from '../../components/Button/ChartToggleButton';
 
 enum ChartPeriod {
@@ -26,7 +27,7 @@ export default function Swap() {
           <div className="flex justify-between items-center w-1/3">
             <div className="flex justify-center w-1/2">
               <Image src="/images/vefi.png" alt="vefi_logo" width={30} height={30} className="rounded-[50px]" />
-              <Image src="/images/brise.png" alt="brise_logo" width={30} height={30} className="rounded-50px" />
+              <Image src="/images/brise.png" alt="brise_logo" width={30} height={30} className="rounded-[50px]" />
             </div>
             <div className="flex justify-center">
               <span className="text-white text-[16px] font-[700]">VEF/BRISE</span>
@@ -161,13 +162,16 @@ export default function Swap() {
     </div>
   );
   return (
-    <div className="flex flex-row justify-between">
-      <div className="hidden md:block md:mx-[79px]">
-        <ChartView />
+    <>
+      <div className="flex flex-row justify-between px-[20px]">
+        <div className="hidden md:block md:mr-[79px]">
+          <ChartView />
+        </div>
+        <div className="block">
+          <FormView />
+        </div>
+        <SwapSettingsModal />
       </div>
-      <div className="block">
-        <FormView />
-      </div>
-    </div>
+    </>
   );
 }

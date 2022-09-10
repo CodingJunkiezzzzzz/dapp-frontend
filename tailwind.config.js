@@ -2,7 +2,10 @@
 module.exports = {
   content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './routes/**/*.{ts,tsx}'],
   theme: {
-    extend: {}
+    extend: {},
+    fontFamily: {
+      poppins: ['Poppins']
+    }
   },
   plugins: []
 };
