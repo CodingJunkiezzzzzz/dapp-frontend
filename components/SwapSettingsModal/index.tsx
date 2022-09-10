@@ -4,6 +4,7 @@ import { FiXCircle } from 'react-icons/fi';
 import { Switch } from '@headlessui/react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
+
 export default function SwapSettingsModal() {
   const [enabled, setEnabled] = React.useState(false);
   let [isOpen, setIsOpen] = useState(true);
