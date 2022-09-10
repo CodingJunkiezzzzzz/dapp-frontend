@@ -9,6 +9,7 @@
     "format": "prettier --write **/**.{css,js,json,ts,tsx}"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.0",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "antd": "^4.20.2",
