@@ -5,7 +5,7 @@ import Header from '../components/Header';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <div className="bg-[url('/images/bg.svg')] bg-no-repeat bg-cover overflow-auto h-screen">
+      <div className="bg-[url('/images/bg.svg')] bg-no-repeat bg-cover overflow-auto h-screen flex flex-col">
         <Header />
         <Component {...pageProps} />
       </div>
