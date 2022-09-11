@@ -1,20 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaParachuteBox, FaCrown, FaTelegram } from 'react-icons/fa';
 import { FiChevronRight, FiShield, FiLock, FiAlertTriangle, FiTwitter } from 'react-icons/fi';
 import { IoIosRocket } from 'react-icons/io';
 import { TiArrowShuffle } from 'react-icons/ti';
 import LaunchpadNavbar from '../../components/LaunchpadNavbar';
+import { Presales } from '../../routes/launchpad';
+
+enum Routes {
+  PRESALES,
+  PRIVATE_SALES
+}
 
 export default function Launchpad() {
+  const [route, setRoute] = useState<Routes>(Routes.PRESALES);
   return (
-    <div className="w-screen flex flex-row justify-start">
+    <div className="w-screen flex flex-col lg:flex-row justify-start items-center">
       <LaunchpadNavbar>
-        <button className="flex justify-between items-center text-[19px] bg-transparent w-full text-[#fff]">
+        <button
+          onClick={() => setRoute(Routes.PRESALES)}
+          className={`flex justify-between items-center text-[19px] bg-transparent w-full ${
+            route === Routes.PRESALES ? 'text-[#46aefc]' : 'text-[#fff]'
+          }`}
+        >
           <IoIosRocket />
           <span className="font-[600] hidden lg:block">Presales</span>
           <FiChevronRight className="hidden lg:block" />
         </button>
-        <button className="flex justify-between items-center text-[19px] bg-transparent w-full text-[#fff]">
+        <button
+          onClick={() => setRoute(Routes.PRIVATE_SALES)}
+          className={`flex justify-between items-center text-[19px] bg-transparent w-full ${
+            route === Routes.PRIVATE_SALES ? 'text-[#46aefc]' : 'text-[#fff]'
+          }`}
+        >
           <FiShield />
           <span className="font-[600] hidden lg:block">Private Sales</span>
           <FiChevronRight className="hidden lg:block" />
@@ -57,6 +74,7 @@ export default function Launchpad() {
           </button>
         </div>
       </LaunchpadNavbar>
+      <div className="w-full lg:w-3/4 flex justify-center mx-auto my-auto">{route === Routes.PRESALES && <Presales />}</div>
     </div>
   );
 }
