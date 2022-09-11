@@ -7,5 +7,5 @@ module.exports = {
       poppins: ['Poppins']
     }
   },
-  plugins: []
+  plugins: [require('daisyui')]
 };
