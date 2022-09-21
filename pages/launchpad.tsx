@@ -3,8 +3,8 @@ import { FaParachuteBox, FaCrown, FaTelegram } from 'react-icons/fa';
 import { FiChevronRight, FiShield, FiLock, FiAlertTriangle, FiTwitter } from 'react-icons/fi';
 import { IoIosRocket } from 'react-icons/io';
 import { TiArrowShuffle } from 'react-icons/ti';
-import LaunchpadNavbar from '../../components/LaunchpadNavbar';
-import { Presales } from '../../routes/launchpad';
+import LaunchpadNavbar from '../components/LaunchpadNavbar';
+import { Presales } from '../routes/launchpad';
 
 enum Routes {
   PRESALES,
