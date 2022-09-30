@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Chart from '../../components/Chart';
 import SwapSettingsModal from '../../components/SwapSettingsModal';
 import ChartToggleButton from '../../components/Button/ChartToggleButton';
+import TokensListModal from '../../components/TokensListModal';
 
 enum ChartPeriod {
   DAY,
@@ -20,6 +21,7 @@ export default function Swap() {
   const [isChartAreaMaximized, setIsChartAreaMaximized] = useState<boolean>(false);
   const [chartPeriod, setChartPeriod] = useState<ChartPeriod>(ChartPeriod.DAY);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState<boolean>(false);
+  const [isTokensListModalVisible, setIsTokensListModalVisible] = useState<boolean>(false);
 
   const ChartView = () => (
     <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] pt-[32px] flex justify-center items-center h-full">
@@ -102,8 +104,9 @@ export default function Swap() {
               <span className="text-white"> Balance: 0</span>
             </div>
             <div className="flex justify-between w-full mt-[10px]">
-              <div className="flex justify-between items-center">
-                <div className="flex justify-center items-center border-r border-white pr-[4px] mr-[4px]">
+              <div className="relative">
+                <div className='flex justify-between items-center '>
+                <div className="flex justify-center items-center border-r border-white pr-[4px] mr-[4px] cursor-pointer" onClick={() => setIsTokensListModalVisible(!isTokensListModalVisible)}>
                   <Image src="/images/vefi.png" alt="vefi_logo" width={40} height={40} className="rounded-[50px]" />
                   <span className="text-white uppercase font-[700] text-[16px] mr-[20px] ml-[20px]">VEF</span>
                   <FiChevronDown className="text-white" />
@@ -112,6 +115,14 @@ export default function Swap() {
                   <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600] mr-[4px]">Max</button>
                   <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]">Half</button>
                 </div>
+                </div>
+               {
+                isTokensListModalVisible && (
+                  <div className='absolute top-[80px] transition-all z-20 '>
+                  <TokensListModal isTokensListModalVisible={isTokensListModalVisible} setIsTokensListModalVisible={setIsTokensListModalVisible} />
+                </div>
+                )
+               }
               </div>
               <div className="flex justify-end">
                 <input
