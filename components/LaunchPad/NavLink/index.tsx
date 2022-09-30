@@ -1,7 +1,7 @@
 import { FiChevronDown } from 'react-icons/fi';
 import React, { MouseEvent } from 'react';
 
-type INavProps = {
+type INavLinkProps = {
   label?: string;
   icon?: any;
   dropdown?: boolean;
@@ -9,7 +9,7 @@ type INavProps = {
   active?: any;
 };
 
-export default function NavLink({ label, icon, dropdown, onClick, active }: INavProps) {
+export default function NavLink({ label, icon, dropdown, onClick, active }: INavLinkProps) {
   return (
     <>
       <div

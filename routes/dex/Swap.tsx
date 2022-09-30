@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FiSettings, FiChevronDown, FiMaximize2, FiMinimize2 } from 'react-icons/fi';
 import { IoMdRefreshCircle } from 'react-icons/io';
 import { MdSwapVerticalCircle, MdOutlineSwapHoriz } from 'react-icons/md';
-import Image from 'next/image';
 import Chart from '../../components/Chart';
 import SwapSettingsModal from '../../components/SwapSettingsModal';
 import ChartToggleButton from '../../components/Button/ChartToggleButton';
@@ -24,13 +23,13 @@ export default function Swap() {
   const [isTokensListModalVisible, setIsTokensListModalVisible] = useState<boolean>(false);
 
   const ChartView = () => (
-    <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] pt-[32px] flex justify-center items-center h-full">
-      <div className={`flex flex-col flex-1 justify-evenly items-center w-[757px] ${isChartAreaMaximized ? 'h-screen' : 'h-full'}`}>
+    <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] pt-[32px] flex justify-center items-center w-full md:w-2/3 overflow-auto">
+      <div className={`flex flex-col flex-1 justify-evenly items-center w-full md:w-[757px] ${isChartAreaMaximized ? 'h-screen' : 'h-full'}`}>
         <div className="flex justify-between items-center w-full">
           <div className="flex justify-between items-center w-1/3">
             <div className="flex justify-center w-1/2">
-              <Image src="/images/vefi.png" alt="vefi_logo" width={30} height={30} className="rounded-[50px]" />
-              <Image src="/images/brise.png" alt="brise_logo" width={30} height={30} className="rounded-[50px]" />
+              <img src="/images/vefi.png" alt="vefi_logo" className="rounded-[50px] w-[30px]" />
+              <img src="/images/brise.png" alt="brise_logo" className="rounded-[50px] h-[30px]" />
             </div>
             <div className="flex justify-center">
               <span className="text-white text-[16px] font-[700]">VEF/BRISE</span>
@@ -51,18 +50,18 @@ export default function Swap() {
           </button>
         </div>
         <div className="flex justify-between items-center w-full mt-[23px]">
-          <div className="flex justify-between items-center w-2/5">
+          <div className="flex justify-between items-center md:w-2/5 gap-1">
             <div className="flex justify-center w-1/3">
-              <span className="text-white font-[700] text-[40px]">68.01</span>
+              <span className="text-white font-[700] text-[16px] md:text-[40px]">68.01</span>
             </div>
             <div className="flex justify-center w-1/3">
               <span className="text-white text-[16px] font-[700]">VEF/BRISE</span>
             </div>
             <div className="flex justify-center w-1/3">
-              <span className="text-[#da004e] font-[700] text-[16px]">-1.638(-2.35%)</span>
+              <span className="text-[#da004e] font-[700] text-[16px] w-full">-1.638(-2.35%)</span>
             </div>
           </div>
-          <div className="flex justify-center bg-[#d9d9d9]/[.1] border-[#d9d9d9] border-[1px] rounded-[18.5px]">
+          <div className="flex flex-col md:flex-row justify-center bg-[#d9d9d9]/[.1] border-[#d9d9d9] border-[1px] rounded-[18.5px]">
             <ChartToggleButton onClick={() => setChartPeriod(ChartPeriod.DAY)} isActive={chartPeriod === ChartPeriod.DAY}>
               <span>24H</span>
             </ChartToggleButton>
@@ -83,7 +82,7 @@ export default function Swap() {
   );
 
   const FormView = () => (
-    <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] flex justify-center items-center py-[19px]">
+    <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] flex justify-center items-center py-[19px] w-full h-full md:w-1/3">
       <div className="flex flex-col justify-evenly items-center w-full">
         <div className="flex justify-between w-full">
           <div>
@@ -104,10 +103,9 @@ export default function Swap() {
               <span className="text-white"> Balance: 0</span>
             </div>
             <div className="flex justify-between w-full mt-[10px]">
-              <div className="relative">
-                <div className='flex justify-between items-center '>
-                <div className="flex justify-center items-center border-r border-white pr-[4px] mr-[4px] cursor-pointer" onClick={() => setIsTokensListModalVisible(!isTokensListModalVisible)}>
-                  <Image src="/images/vefi.png" alt="vefi_logo" width={40} height={40} className="rounded-[50px]" />
+              <div className="flex justify-between items-center">
+                <div className="flex justify-center items-center border-r border-white pr-[4px] mr-[4px]">
+                  <img src="/images/vefi.png" alt="vefi_logo" className="rounded-[50px] w-[40px] h-[40px]" />
                   <span className="text-white uppercase font-[700] text-[16px] mr-[20px] ml-[20px]">VEF</span>
                   <FiChevronDown className="text-white" />
                 </div>
@@ -115,14 +113,6 @@ export default function Swap() {
                   <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600] mr-[4px]">Max</button>
                   <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]">Half</button>
                 </div>
-                </div>
-               {
-                isTokensListModalVisible && (
-                  <div className='absolute top-[80px] transition-all z-20 '>
-                  <TokensListModal isTokensListModalVisible={isTokensListModalVisible} setIsTokensListModalVisible={setIsTokensListModalVisible} />
-                </div>
-                )
-               }
               </div>
               <div className="flex justify-end">
                 <input
@@ -147,7 +137,7 @@ export default function Swap() {
             <div className="flex justify-between w-full mt-[10px]">
               <div className="flex justify-center items-center">
                 <div className="flex justify-center items-center border-r border-white pr-[4px] mr-[4px]">
-                  <Image src="/images/brise.png" alt="brise_logo" width={40} height={40} className="rounded-[50px]" />
+                  <img src="/images/brise.png" alt="vefi_logo" className="rounded-[50px] w-[40px] h-[40px]" />
                   <span className="text-white uppercase font-[700] text-[16px] mr-[20px] ml-[20px]">BRISE</span>
                   <FiChevronDown className="text-white" />
                 </div>
@@ -175,13 +165,11 @@ export default function Swap() {
   );
   return (
     <>
-      <div className="flex flex-row justify-between px-[20px]">
-        <div className="hidden md:block md:mr-[79px]">
-          <ChartView />
-        </div>
-        <div className="block">
-          <FormView />
-        </div>
+      <div className="flex flex-col-reverse md:flex-row px-[20px] justify-between w-full gap-3 md:gap-7">
+        <ChartView />
+
+        <FormView />
+
         <SwapSettingsModal isOpen={isSettingsModalVisible} onClose={() => setIsSettingsModalVisible(false)} />
       </div>
     </>

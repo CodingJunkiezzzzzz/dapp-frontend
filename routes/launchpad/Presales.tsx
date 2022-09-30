@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Card } from '../../components/LaunchPad';
+import { PresaleItemCard } from '../../components/LaunchPad';
 import { FiPlus, FiBell, FiChevronDown } from 'react-icons/fi';
 
 enum Subroutes {
@@ -132,7 +132,7 @@ export default function Presales() {
           </div>
         </div>
       </div>
-      <Card
+      <PresaleItemCard
         logo={`/images/brise.png`}
         name="Brise"
         maxCon="1"
@@ -143,7 +143,7 @@ export default function Presales() {
         tagColor="#FA00FF"
         tagName="Audit"
       />
-      <Card
+      <PresaleItemCard
         logo={`/images/vefi.png`}
         name="Vefi"
         maxCon="200"
@@ -154,7 +154,7 @@ export default function Presales() {
         tagColor="#E18700"
         tagName="Audit"
       />
-      <Card
+      <PresaleItemCard
         logo={`/images/phantom.svg`}
         name="phantom"
         maxCon="50"

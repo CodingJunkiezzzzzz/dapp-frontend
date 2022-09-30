@@ -13,7 +13,7 @@ type IReuseableCardProps = {
   liquidity: string;
   lockTime: string;
 };
-export default function Card({ logo, tagName, tagColor, name, maxCon, hardCap, softCap, liquidity, lockTime }: IReuseableCardProps) {
+export default function PresaleItemCard({ logo, tagName, tagColor, name, maxCon, hardCap, softCap, liquidity, lockTime }: IReuseableCardProps) {
   return (
     <>
       <div className="flex w-80 h-auto bg-[#161525] m-1 p-5 rounded-lg lg:w-85">

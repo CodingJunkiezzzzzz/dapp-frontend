@@ -1,2 +1,2 @@
-export { default as Card } from './Card';
-export { default as NavLink } from './Navbar';
+export { default as PresaleItemCard } from './PresaleItemCard';
+export { default as NavLink } from './NavLink';

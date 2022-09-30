@@ -4,7 +4,8 @@ import { Liquidity, Swap } from '../routes/dex';
 
 enum Route {
   SWAP,
-  LIQUIDITY
+  LIQUIDITY,
+  STATS
 }
 
 export default function Dex() {
@@ -18,6 +19,9 @@ export default function Dex() {
           </ToggleButton>
           <ToggleButton isActive={route === Route.LIQUIDITY} onClick={() => setRoute(Route.LIQUIDITY)}>
             <span>Liquidity</span>
+          </ToggleButton>
+          <ToggleButton isActive={route === Route.STATS} onClick={() => setRoute(Route.STATS)}>
+            <span>Stats</span>
           </ToggleButton>
         </div>
       </div>
