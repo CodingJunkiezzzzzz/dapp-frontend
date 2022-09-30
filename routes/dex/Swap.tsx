@@ -19,6 +19,7 @@ export default function Swap() {
   const [val2, setVal2] = useState<number>(0.0);
   const [isChartAreaMaximized, setIsChartAreaMaximized] = useState<boolean>(false);
   const [chartPeriod, setChartPeriod] = useState<ChartPeriod>(ChartPeriod.DAY);
+  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState<boolean>(false);
 
   const ChartView = () => (
     <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] pt-[32px] flex justify-center items-center h-full">
@@ -89,7 +90,7 @@ export default function Swap() {
             </button>
           </div>
           <div>
-            <button className="bg-transparent text-white text-[23px]">
+            <button onClick={() => setIsSettingsModalVisible(true)} className="bg-transparent text-white text-[23px]">
               <FiSettings />
             </button>
           </div>
@@ -170,7 +171,7 @@ export default function Swap() {
         <div className="block">
           <FormView />
         </div>
-        <SwapSettingsModal />
+        <SwapSettingsModal isOpen={isSettingsModalVisible} onClose={() => setIsSettingsModalVisible(false)} />
       </div>
     </>
   );

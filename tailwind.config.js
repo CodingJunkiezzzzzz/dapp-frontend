@@ -4,8 +4,9 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      poppins: ['Poppins']
+      poppins: ['Poppins'],
+      Montserrat: ['Montserrat']
     }
   },
-  plugins: []
+  plugins: [require('daisyui')]
 };
