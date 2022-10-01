@@ -104,7 +104,10 @@ export default function Swap() {
             </div>
             <div className="flex justify-between w-full mt-[10px]">
               <div className="flex justify-between items-center">
-                <div className="flex justify-center items-center border-r border-white pr-[4px] mr-[4px]">
+                <div
+                  className="flex justify-center items-center border-r border-white pr-[4px] mr-[4px]"
+                  onClick={() => setIsTokensListModalVisible(true)}
+                >
                   <img src="/images/vefi.png" alt="vefi_logo" className="rounded-[50px] w-[40px] h-[40px]" />
                   <span className="text-white uppercase font-[700] text-[16px] mr-[20px] ml-[20px]">VEF</span>
                   <FiChevronDown className="text-white" />
@@ -171,6 +174,7 @@ export default function Swap() {
         <FormView />
 
         <SwapSettingsModal isOpen={isSettingsModalVisible} onClose={() => setIsSettingsModalVisible(false)} />
+        <TokensListModal isVisible={isTokensListModalVisible} onClose={() => setIsTokensListModalVisible(false)} />
       </div>
     </>
   );

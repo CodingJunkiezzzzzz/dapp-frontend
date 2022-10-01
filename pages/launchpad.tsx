@@ -15,9 +15,9 @@ enum Routes {
 export default function Launchpad() {
   const [route, setRoute] = useState<Routes>(Routes.PRESALES);
   return (
-    <div className="flex w-full backdrop-opacity-10 backdrop-invert bg-[#05325B]/70">
+    <div className="flex flex-col md:flex-row w-screen backdrop-opacity-10 backdrop-invert bg-[#05325B]/70 h-screen overflow-auto hidden-scrollbar">
       {/*Nav Bar*/}
-      <div className="w-80 py-10 px-5 max-h-screen bg-[#161525] text-white">
+      <div className="w-full md:w-80 py-10 px-5 h-[40px] md:h-full bg-[#161525] text-white">
         <LaunchpadNavbar>
           <NavLink
             label="Presales"
@@ -27,12 +27,12 @@ export default function Launchpad() {
             active={`${route === Routes.PRESALES ? 'text-[#46aefc]' : 'text-[#fff]'}`}
           />
           <NavLink label="Private sales" icon={<FiDollarSign className="text-white" />} dropdown onClick={() => setRoute(Routes.PRIVATE_SALES)} />
-          <NavLink label="Launchpad" icon={<IoIosRocket className="text-white" />} dropdown />
+          <NavLink label="Airdrops" icon={<FaParachuteBox className="text-white" />} dropdown />
           <NavLink label="Locks" icon={<FiLock className="text-white" />} dropdown />
           <NavLink label="Utitlty &amp; Tools" icon={<FiSettings className="text-white" />} dropdown />
           <NavLink label="Listing Alerts (Beta)" icon={<FiNavigation className="text-white" />} />
           <NavLink label="KYC &amp; Audit" icon={<FiShield className="text-white" />} />
-          <div>
+          {/* <div>
             <NavLink label="Docs" icon={<FiFile className="text-white" />} />
             <div className="flex flex-col ml-10 py-2">
               <div className="flex items-center py-1 text-[12px] font-Montserrat">
@@ -48,11 +48,11 @@ export default function Launchpad() {
                 <span>Diamond</span>
               </div>
             </div>
-          </div>
+          </div> */}
         </LaunchpadNavbar>
       </div>
       {/*Main Content*/}
-      <div className="flex  w-screen  p-10  flex-wrap">{route === Routes.PRESALES && <Presales />}</div>
+      <div className="w-screen p-10">{route === Routes.PRESALES && <Presales />}</div>
     </div>
   );
 }

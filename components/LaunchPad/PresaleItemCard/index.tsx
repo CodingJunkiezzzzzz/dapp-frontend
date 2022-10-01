@@ -1,41 +1,54 @@
 import React from 'react';
 import { FiHeart, FiBell } from 'react-icons/fi';
-import Image from 'next/image';
 
 type IReuseableCardProps = {
-  logo?: any;
-  tagName?: string;
+  logo?: string;
+  tagName: 'gold' | 'silver' | 'bronze';
   tagColor?: any;
   name: string;
-  maxCon: string;
+  maxContribution: string;
   hardCap: string;
   softCap: string;
   liquidity: string;
   lockTime: string;
+  progress: number;
 };
-export default function PresaleItemCard({ logo, tagName, tagColor, name, maxCon, hardCap, softCap, liquidity, lockTime }: IReuseableCardProps) {
+export default function PresaleItemCard({
+  logo,
+  tagName,
+  tagColor,
+  name,
+  maxContribution,
+  hardCap,
+  softCap,
+  liquidity,
+  lockTime,
+  progress
+}: IReuseableCardProps) {
   return (
     <>
       <div className="flex w-80 h-auto bg-[#161525] m-1 p-5 rounded-lg lg:w-85">
         <div className="w-full flex flex-col ">
           <div className="flex items-center justify-between h-10 w-full">
             <div className="flex">
-              <Image src={logo} alt="brise" width="40px" height="40px" />
+              <img src={logo} alt={name} className="w-[40px] h-[40px] rounded-[50px]" />
             </div>
             <div className="flex w-2/5 justify-around items-center">
-              <span className={`flex items-center bg-[${tagColor}] text-white text-[10px] font-[600] rounded p-1`}>{tagName}</span>
+              <span className={`flex items-center ${tagColor} text-white text-[10px] font-[600] rounded p-1`}>{tagName}</span>
             </div>
           </div>
           <div className="flex flex-col w-full">
-            <h2 className="text-[2rem] uppercase text-[#fff] font-[800] pt-2 font-Montserrat">{name}</h2>
+            <h2 className="text-[20px] uppercase text-[#fff] font-[800] pt-2 font-Montserrat">{name}</h2>
             <h3 className="flex items-center justify-between text-[1rem] text-[#fff] capitalize font-[700] pb-2 font-Montserrat">
               <span>Max Contribution:</span>
-              <span>{maxCon}</span>
+              <span>{maxContribution}</span>
             </h3>
           </div>
           <div className="flex flex-col my-5">
-            <span className="text-[#fff] font-Montserrat font-[600] pb-[0.099rem]">Progress (0.00%)</span>
-            <span className="border-t-8 border-t-[#1673B9]"></span>
+            <span className="text-[#fff] font-Montserrat font-[600] pb-[0.099rem]">Progress ({progress.toFixed(3)}%)</span>
+            <div className="h-[8px] bg-[#1673B9]">
+              <div className="h-full bg-green-400" style={{ width: progress + '%' }} />
+            </div>
             <div className="flex justify-between text-center pt-[0.099rem]">
               <span className="text-[#fff] font-bold font-Montserrat">0</span>
               <span className="text-[#fff] font-bold font-Montserrat">300</span>

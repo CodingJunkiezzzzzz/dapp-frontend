@@ -10,19 +10,130 @@ enum Subroutes {
 }
 
 const mockData: Array<{
+  logo?: string;
+  tagName: 'gold' | 'silver' | 'bronze';
+  tagColor?: any;
   name: string;
-  maxContribution: number;
-  hardCap: number;
-  softCap: number;
-  liquidity: number;
-}> = [];
+  maxContribution: string;
+  hardCap: string;
+  softCap: string;
+  liquidity: string;
+  lockTime: string;
+}> = [
+  {
+    logo: '/images/brise.png',
+    tagName: 'gold',
+    name: 'Wrapped Brise',
+    tagColor: 'bg-[#d4af37]',
+    maxContribution: '4000000 BRISE',
+    hardCap: '4000000 BRISE',
+    softCap: '2000000 BRISE',
+    liquidity: '7%',
+    lockTime: '30 Days'
+  },
+  {
+    logo: '/images/vefi.png',
+    tagName: 'gold',
+    name: 'Vefi Ecosystem Token',
+    tagColor: 'bg-[#d4af37]',
+    maxContribution: '4000000 BRISE',
+    hardCap: '4000000 BRISE',
+    softCap: '2000000 BRISE',
+    liquidity: '7%',
+    lockTime: '30 Days'
+  },
+  {
+    logo: '/images/phantom.svg',
+    tagName: 'gold',
+    name: 'Phantom Token',
+    tagColor: 'bg-[#d4af37]',
+    maxContribution: '4000000 BRISE',
+    hardCap: '4000000 BRISE',
+    softCap: '2000000 BRISE',
+    liquidity: '7%',
+    lockTime: '30 Days'
+  },
+  {
+    logo: '/images/phantom.svg',
+    tagName: 'gold',
+    name: 'Phantom Token',
+    tagColor: 'bg-[#d4af37]',
+    maxContribution: '4000000 BRISE',
+    hardCap: '4000000 BRISE',
+    softCap: '2000000 BRISE',
+    liquidity: '7%',
+    lockTime: '30 Days'
+  },
+  {
+    logo: '/images/phantom.svg',
+    tagName: 'gold',
+    name: 'Phantom Token',
+    tagColor: 'bg-[#d4af37]',
+    maxContribution: '4000000 BRISE',
+    hardCap: '4000000 BRISE',
+    softCap: '2000000 BRISE',
+    liquidity: '7%',
+    lockTime: '30 Days'
+  },
+  {
+    logo: '/images/vefi.png',
+    tagName: 'gold',
+    name: 'Vefi Ecosystem Token',
+    tagColor: 'bg-[#d4af37]',
+    maxContribution: '4000000 BRISE',
+    hardCap: '4000000 BRISE',
+    softCap: '2000000 BRISE',
+    liquidity: '7%',
+    lockTime: '30 Days'
+  },
+  {
+    logo: '/images/vefi.png',
+    tagName: 'gold',
+    name: 'Vefi Ecosystem Token',
+    tagColor: 'bg-[#d4af37]',
+    maxContribution: '4000000 BRISE',
+    hardCap: '4000000 BRISE',
+    softCap: '2000000 BRISE',
+    liquidity: '7%',
+    lockTime: '30 Days'
+  },
+  {
+    logo: '/images/vefi.png',
+    tagName: 'gold',
+    name: 'Vefi Ecosystem Token',
+    tagColor: 'bg-[#d4af37]',
+    maxContribution: '4000000 BRISE',
+    hardCap: '4000000 BRISE',
+    softCap: '2000000 BRISE',
+    liquidity: '7%',
+    lockTime: '30 Days'
+  }
+];
 
 export default function Presales() {
-  const AllSalesRoute = () => <div className="flex flex-col lg:flex-row justify-evenly items-center gap-2"></div>;
+  const AllSalesRoute = () => (
+    <div className="flex flex-col md:flex-row justify-center items-center gap-2 flex-wrap">
+      {_.map(mockData, (data, index) => (
+        <PresaleItemCard
+          key={index}
+          logo={data.logo}
+          tagName={data.tagName}
+          tagColor={data.tagColor}
+          name={data.name}
+          maxContribution={data.maxContribution}
+          hardCap={data.hardCap}
+          softCap={data.softCap}
+          liquidity={data.liquidity}
+          lockTime={data.lockTime}
+          progress={Math.random() * 100}
+        />
+      ))}
+    </div>
+  );
 
   return (
-    <>
-      <div className="flex w-full p-5 m-5">
+    <div className="h-full overflow-auto hidden-scrollbar">
+      {/* <div className="flex w-full p-5 m-5">
         <div className="flex items-center w-full flex-wrap">
           <div className="flex bg-red-400 h-[80px] rounded-[15px] bg-[rgba(0,0,0,0.25)] border border-[rgba(199,199,199,0.5)] w-[168px] m-2"></div>
           <div className="flex bg-red-400 h-[80px] rounded-[15px] bg-[rgba(0,0,0,0.25)] border border-[rgba(199,199,199,0.5)] w-[168px] m-2"></div>
@@ -30,8 +141,8 @@ export default function Presales() {
           <div className="flex bg-red-400 h-[80px] rounded-[15px] bg-[rgba(0,0,0,0.25)] border border-[rgba(199,199,199,0.5)] w-[168px] m-2"></div>
           <div className="flex bg-red-400 h-[80px] rounded-[15px] bg-[rgba(0,0,0,0.25)] border border-[rgba(199,199,199,0.5)] w-[168px] m-2"></div>
         </div>
-      </div>
-      <div className="flex w-full mb-5">
+      </div> */}
+      {/* <div className="flex w-full mb-5">
         <div className="flex w-full items-center justify-evenly text-[#C7C7C7] font-[600] text-[14px] ">
           <div className="flex items-center ">
             <div className="flex mr-3">
@@ -64,17 +175,17 @@ export default function Presales() {
             <div className="font-Montserrat">Favorite</div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="flex w-full my-8">
-        <div className="flex w-full items-center">
-          <div className="flex w-1/4 justify-evenly">
+        <div className="flex w-full items-center flex-col md:flex-row">
+          <div className="flex w-full md:w-1/4 justify-center flex-col md:flex-row">
             <button className="flex justify-center p-3 bg-[#ffeb82] items-center rounded-[11px] text-[#000] max-h-[54px]">
               <FiPlus />
               <span className="font-[600] ml-[4px]">Create</span>
             </button>
-            <button className="flex justify-center p-3 bg-[#ffeb82] items-center rounded-[11px] text-[#000] max-h-[54px]">
+            {/* <button className="flex justify-center p-3 bg-[#ffeb82] items-center rounded-[11px] text-[#000] max-h-[54px]">
               <span className="font-[600]">Networks</span>
-            </button>
+            </button> */}
           </div>
           <div className="flex w-3/4 p-5 justify-end">
             <div className="dropdown">
@@ -132,39 +243,7 @@ export default function Presales() {
           </div>
         </div>
       </div>
-      <PresaleItemCard
-        logo={`/images/brise.png`}
-        name="Brise"
-        maxCon="1"
-        softCap="150"
-        hardCap="300"
-        liquidity="70%"
-        lockTime="80 days"
-        tagColor="#FA00FF"
-        tagName="Audit"
-      />
-      <PresaleItemCard
-        logo={`/images/vefi.png`}
-        name="Vefi"
-        maxCon="200"
-        softCap="150"
-        hardCap="300"
-        liquidity="65%"
-        lockTime="20 days"
-        tagColor="#E18700"
-        tagName="Audit"
-      />
-      <PresaleItemCard
-        logo={`/images/phantom.svg`}
-        name="phantom"
-        maxCon="50"
-        softCap="150"
-        hardCap="300"
-        liquidity="70%"
-        lockTime="30 days"
-        tagColor="#19B916"
-        tagName="upcoming"
-      />
-    </>
+      <AllSalesRoute />
+    </div>
   );
 }

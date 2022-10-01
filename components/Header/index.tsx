@@ -47,12 +47,12 @@ const ActiveLink = ({ children, activeClassName, ...props }: ActiveLinkProps) =>
 export default function Header() {
   return (
     <>
-      <div className="bg-gradient-to-r from-[#000000] to-[#161525] w-full">
+      <div className="bg-gradient-to-r from-[#000000] to-[#161525] w-full font-Montserrat">
         <div className="flex flex-row justify-between px-[38px] py-[16px]">
           <div className="flex justify-center">
             <Image src="/images/vefi.svg" alt="vefi_logo" width={30} height={30} />
           </div>
-          <div className="lg:flex flex-row justify-between hidden">
+          <div className="md:flex flex-row justify-between hidden">
             <div className="px-[23px] cursor-pointer">
               <ActiveLink activeClassName="border-b-[3px] border-b-[#46aefc]" href="/dex">
                 <span className="text-white text-[21px] font-[600]">Trade</span>
@@ -68,12 +68,17 @@ export default function Header() {
                 <span className="text-white text-[21px] font-[600]">Staking Pools</span>
               </ActiveLink>
             </div>
+            <div className="px-[23px] cursor-pointer">
+              <ActiveLink activeClassName="border-b-[3px] border-b-[#46aefc]" href="/multisig">
+                <span className="text-white text-[21px] font-[600]">Multi-Signature</span>
+              </ActiveLink>
+            </div>
           </div>
           <div>
             <button className="hidden lg:flex justify-center items-center bg-[#1673b9] py-[9px] px-[10px] rounded-[11px] text-[18px] text-white">
               <FaWallet /> <span className="text-white text-[18px] ml-[2px]">Connect Wallet</span>
             </button>
-            <button className="lg:hidden flex justify-center items-center bg-[#1673b9] py-[9px] px-[10px] rounded-[5px] text-[18px] text-white">
+            <button className="md:hidden flex justify-center items-center bg-[#1673b9] py-[9px] px-[10px] rounded-[5px] text-[18px] text-white">
               <RiMenu4Fill />
             </button>
           </div>
