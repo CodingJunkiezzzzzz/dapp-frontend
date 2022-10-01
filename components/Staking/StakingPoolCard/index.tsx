@@ -26,7 +26,7 @@ export default function StakingPoolCard({
 }: IStakingPoolCardProps) {
   const [showDetails, setShowDetails] = useState<boolean>(false);
   return (
-    <div className="card backdrop-blur-[32px] rounded-[20px] bg-[#000]/50 shadow-xl font-Montserrat">
+    <div className="card backdrop-blur-[32px] rounded-[20px] bg-[#000]/50 shadow-xl font-Montserrat overflow-auto hidden-scrollbar w-full">
       <div className="card-body w-full py-7 overflow-auto">
         <div className="flex flex-row justify-between items-center w-full gap-3">
           <div className="flex flex-row justify-center gap-1 items-center">
