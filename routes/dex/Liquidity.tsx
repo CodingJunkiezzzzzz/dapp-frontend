@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Image from 'rc-image';
 import { FiSettings, FiPlus, FiChevronDown } from 'react-icons/fi';
 import { IoMdRefreshCircle, IoIosUndo } from 'react-icons/io';
 
@@ -69,13 +68,13 @@ export default function Liquidity() {
       <div className="flex flex-col justify-center w-full mt-10">
         <div className="bg-[#0c0b16] rounded-[12px] flex flex-col w-full px-[23px] py-[9px] justify-evenly">
           <div className="flex justify-between w-full">
-            <span className="text-white">From</span>
+            <span className="text-white">Token 1</span>
             <span className="text-white"> Balance: 0</span>
           </div>
           <div className="flex justify-between w-full mt-[10px]">
             <div className="flex justify-between items-center">
               <div className="flex justify-center items-center border-r border-white pr-[4px] mr-[4px]">
-                <Image src="/images/vefi.png" alt="vefi_logo" width={40} height={40} className="rounded-[50px]" />
+                <img src="/images/vefi.png" alt="vefi_logo" className="rounded-[50px] w-[40px] h-[40px]" />
                 <span className="text-white uppercase font-[700] text-[16px] mr-[20px] ml-[20px]">VEF</span>
                 <FiChevronDown className="text-white" />
               </div>
@@ -101,13 +100,13 @@ export default function Liquidity() {
         </div>
         <div className="bg-[#0c0b16] rounded-[12px] flex flex-col w-full px-[23px] py-[9px] justify-evenly">
           <div className="flex justify-between w-full">
-            <span className="text-white">To</span>
+            <span className="text-white">Token 2</span>
             <span className="text-white"> Balance: 0</span>
           </div>
           <div className="flex justify-between w-full mt-[10px]">
             <div className="flex justify-center items-center">
               <div className="flex justify-center items-center border-r border-white pr-[4px] mr-[4px]">
-                <Image src="/images/brise.png" alt="brise_logo" width={40} height={40} className="rounded-[50px]" />
+                <img src="/images/brise.png" alt="vefi_logo" className="rounded-[50px] w-[40px] h-[40px]" />
                 <span className="text-white uppercase font-[700] text-[16px] mr-[20px] ml-[20px]">BRISE</span>
                 <FiChevronDown className="text-white" />
               </div>
@@ -134,9 +133,11 @@ export default function Liquidity() {
   );
 
   return (
-    <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] flex justify-center items-center py-[19px]">
-      {route === LiquidityRoutes.LIQUIDITY_POOLS && <LPRoute />}
-      {route === LiquidityRoutes.ADD_LIQUIDITY && <AddLiquidityRoute />}
+    <div className="px-[20px]">
+      <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] flex justify-center items-center py-[19px]">
+        {route === LiquidityRoutes.LIQUIDITY_POOLS && <LPRoute />}
+        {route === LiquidityRoutes.ADD_LIQUIDITY && <AddLiquidityRoute />}
+      </div>
     </div>
   );
 }

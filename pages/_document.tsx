@@ -16,11 +16,8 @@ export default class CustomDocument extends Document {
           {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
           <meta name="theme-color" content="#000000" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="crossOrigin" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
-            rel="stylesheet"
-          />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={undefined} />
+          <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap" rel="stylesheet" />
           <meta name="description" content="Vefi is building a future immersed in Web3 for the massive adoption of blockchain technology." />
         </Head>
         <body>

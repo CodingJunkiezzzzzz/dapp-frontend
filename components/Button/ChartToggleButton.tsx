@@ -11,7 +11,7 @@ export default function ChartToggleButton({ isActive, onClick, children }: ITogg
     <button
       className={`${
         isActive ? 'bg-[#1673b9] rounded-[18px] text-[#ffffff] font-[700]' : 'bg-transparent text-[#1673b9] font-[600]'
-      } py-[6px] px-[19px] flex justify-center text-[14px]`}
+      } px-[6px] py-[19px] md:py-[6px] md:px-[19px] flex flex-col md:flex-row justify-center text-[14px]`}
       onClick={onClick}
     >
       {children}
