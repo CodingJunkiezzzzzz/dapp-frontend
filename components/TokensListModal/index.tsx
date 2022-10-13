@@ -4,6 +4,7 @@ import { FiSearch, FiX } from 'react-icons/fi';
 import _ from 'lodash';
 import { useAPIContext } from '../../contexts/api';
 import { ListingModel } from '../../api/models/dex';
+import TokensListItem from './list';
 
 type ITokensListModalProps = {
   onClose: () => void;
@@ -47,36 +48,15 @@ export default function TokensListModal({ onClose, isVisible, onTokenSelected, s
                   </div>
                 </div>
                 {_.map(tokensListing, (model, index) => (
-                  <button
-                    disabled={selectedToken && _.isEqual(selectedToken, model)}
+                  <TokensListItem
+                    key={index}
+                    model={model}
+                    disabled={_.isEqual(selectedToken, model)}
                     onClick={() => {
                       onTokenSelected(model);
                       onClose();
                     }}
-                    key={index}
-                    className="flex justify-center items-start px-0 w-full overflow-auto font-poppins"
-                  >
-                    <div className="bg-[#161525]/[.6] rounded-tr-[15px] w-[60px] h-full p-0 flex flex-col">
-                      <div
-                        className={`${
-                          selectedToken && _.isEqual(selectedToken, model) ? 'bg-black/[.7]' : 'bg-transparent'
-                        } w-full flex justify-center py-4 px-2`}
-                      >
-                        <div className="bg-white w-[30px] h-[30px] rounded-[50px] flex justify-center">
-                          <img src={model.logoURI} alt={model.symbol} className="w-full h-full" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col flex-1 p-0 h-full">
-                      <div className="flex justify-between w-full items-center bg-transparent text-[#dcdcdc] px-[8px]">
-                        <div className="flex flex-col justify-between gap-1">
-                          <span className="font-[700] text-[25px] uppercase">{model.symbol}</span>
-                          <span className="font-[500] text-[14px]">{model.name}</span>
-                        </div>
-                        <span className="text-[16px]">0.005</span>
-                      </div>
-                    </div>
-                  </button>
+                  />
                 ))}
               </div>
             </Transition.Child>

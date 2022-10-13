@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FiSettings, FiChevronDown, FiMaximize2, FiMinimize2 } from 'react-icons/fi';
 import { IoMdRefreshCircle } from 'react-icons/io';
 import { MdSwapVerticalCircle, MdOutlineSwapHoriz } from 'react-icons/md';
@@ -9,7 +9,7 @@ import TokensListModal from '../../components/TokensListModal';
 import { ListingModel } from '../../api/models/dex';
 import { useAPIContext } from '../../contexts/api';
 import { useWeb3Context } from '../../contexts/web3';
-import { computePair, getToken1Price } from '../../hooks/dex';
+import { computePair, getToken1Price, fetchTokenBalanceForConnectedWallet } from '../../hooks/dex';
 
 enum ChartPeriod {
   DAY,
@@ -28,12 +28,23 @@ export default function Swap() {
   const [isSecondTokensListModalVisible, setIsSecondTokensListModalVisible] = useState<boolean>(false);
 
   const { tokensListing } = useAPIContext();
-  const { chainId } = useWeb3Context();
+  const { chainId, active } = useWeb3Context();
   const [firstSelectedToken, setFirstSelectedToken] = useState<ListingModel>({} as ListingModel);
   const [secondSelectedToken, setSecondSelectedToken] = useState<ListingModel>({} as ListingModel);
 
   const { pair, error: pairError } = computePair(firstSelectedToken, secondSelectedToken, chainId || 97);
   const token1Price = getToken1Price(firstSelectedToken, secondSelectedToken, chainId || 97);
+
+  const balance1 = fetchTokenBalanceForConnectedWallet(firstSelectedToken);
+  const balance2 = fetchTokenBalanceForConnectedWallet(secondSelectedToken);
+
+  const switchSelectedTokens = useCallback(() => {
+    const token1 = firstSelectedToken;
+    const token2 = secondSelectedToken;
+
+    setFirstSelectedToken(token2);
+    setSecondSelectedToken(token1);
+  }, [firstSelectedToken, secondSelectedToken]);
 
   useEffect(() => {
     if (tokensListing.length >= 2) {
@@ -48,8 +59,8 @@ export default function Swap() {
         <div className="flex justify-between items-center w-full">
           <div className="flex justify-between items-center w-1/3">
             <div className="flex justify-center w-1/2">
-              <img src="/images/vefi.png" alt="vefi_logo" className="rounded-[50px] w-[30px]" />
-              <img src="/images/brise.png" alt="brise_logo" className="rounded-[50px] h-[30px]" />
+              <img src={firstSelectedToken.logoURI} alt={firstSelectedToken.name} className="rounded-[50px] w-[30px]" />
+              <img src={secondSelectedToken.logoURI} alt={secondSelectedToken.name} className="rounded-[50px] h-[30px]" />
             </div>
             <div className="flex justify-center">
               <span className="text-white text-[16px] font-[700]">VEF/BRISE</span>
@@ -75,7 +86,9 @@ export default function Swap() {
               <span className="text-white font-[700] text-[16px] md:text-[40px]">68.01</span>
             </div>
             <div className="flex justify-center w-1/3">
-              <span className="text-white text-[16px] font-[700]">VEF/BRISE</span>
+              <span className="text-white text-[16px] font-[700]">
+                {firstSelectedToken.symbol}/{secondSelectedToken.symbol}
+              </span>
             </div>
             <div className="flex justify-center w-1/3">
               <span className="text-[#da004e] font-[700] text-[16px] w-full">-1.638(-2.35%)</span>
@@ -120,7 +133,7 @@ export default function Swap() {
           <div className="bg-[#0c0b16] rounded-[12px] flex flex-col w-full px-[23px] py-[9px] justify-evenly">
             <div className="flex justify-between w-full">
               <span className="text-white">From</span>
-              <span className="text-white"> Balance: 0</span>
+              <span className="text-white"> Balance: {balance1}</span>
             </div>
             <div className="flex justify-between w-full mt-[10px]">
               <div className="flex justify-between items-center">
@@ -148,14 +161,14 @@ export default function Swap() {
             </div>
           </div>
           <div className="flex justify-center items-center my-[9.5px]">
-            <button className="bg-transparent text-[#ffffff] text-[30px]">
+            <button onClick={switchSelectedTokens} className="bg-transparent text-[#ffffff] text-[30px]">
               <MdSwapVerticalCircle />
             </button>
           </div>
           <div className="bg-[#0c0b16] rounded-[12px] flex flex-col w-full px-[23px] py-[9px] justify-evenly">
             <div className="flex justify-between w-full">
               <span className="text-white">To</span>
-              <span className="text-white"> Balance: 0</span>
+              <span className="text-white"> Balance: {balance2}</span>
             </div>
             <div className="flex justify-between w-full mt-[10px]">
               <div className="flex justify-center items-center">
