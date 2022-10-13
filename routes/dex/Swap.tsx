@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiSettings, FiChevronDown, FiMaximize2, FiMinimize2 } from 'react-icons/fi';
 import { IoMdRefreshCircle } from 'react-icons/io';
 import { MdSwapVerticalCircle, MdOutlineSwapHoriz } from 'react-icons/md';
@@ -6,6 +6,10 @@ import Chart from '../../components/Chart';
 import SwapSettingsModal from '../../components/SwapSettingsModal';
 import ChartToggleButton from '../../components/Button/ChartToggleButton';
 import TokensListModal from '../../components/TokensListModal';
+import { ListingModel } from '../../api/models/dex';
+import { useAPIContext } from '../../contexts/api';
+import { useWeb3Context } from '../../contexts/web3';
+import { computePair, getToken1Price } from '../../hooks/dex';
 
 enum ChartPeriod {
   DAY,
@@ -20,7 +24,23 @@ export default function Swap() {
   const [isChartAreaMaximized, setIsChartAreaMaximized] = useState<boolean>(false);
   const [chartPeriod, setChartPeriod] = useState<ChartPeriod>(ChartPeriod.DAY);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState<boolean>(false);
-  const [isTokensListModalVisible, setIsTokensListModalVisible] = useState<boolean>(false);
+  const [isFirstTokensListModalVisible, setIsFirstTokensListModalVisible] = useState<boolean>(false);
+  const [isSecondTokensListModalVisible, setIsSecondTokensListModalVisible] = useState<boolean>(false);
+
+  const { tokensListing } = useAPIContext();
+  const { chainId } = useWeb3Context();
+  const [firstSelectedToken, setFirstSelectedToken] = useState<ListingModel>({} as ListingModel);
+  const [secondSelectedToken, setSecondSelectedToken] = useState<ListingModel>({} as ListingModel);
+
+  const { pair, error: pairError } = computePair(firstSelectedToken, secondSelectedToken, chainId || 97);
+  const token1Price = getToken1Price(firstSelectedToken, secondSelectedToken, chainId || 97);
+
+  useEffect(() => {
+    if (tokensListing.length >= 2) {
+      setFirstSelectedToken(tokensListing[0]);
+      setSecondSelectedToken(tokensListing[1]);
+    }
+  }, [tokensListing]);
 
   const ChartView = () => (
     <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] pt-[32px] flex justify-center items-center w-full md:w-2/3 overflow-auto">
@@ -105,22 +125,22 @@ export default function Swap() {
             <div className="flex justify-between w-full mt-[10px]">
               <div className="flex justify-between items-center">
                 <div
-                  className="flex justify-center items-center border-r border-white pr-[4px] mr-[4px]"
-                  onClick={() => setIsTokensListModalVisible(true)}
+                  className="flex justify-start items-center border-r border-white p-4 cursor-pointer gap-1 w-[150px]"
+                  onClick={() => setIsFirstTokensListModalVisible(true)}
                 >
-                  <img src="/images/vefi.png" alt="vefi_logo" className="rounded-[50px] w-[40px] h-[40px]" />
-                  <span className="text-white uppercase font-[700] text-[16px] mr-[20px] ml-[20px]">VEF</span>
+                  <img src={firstSelectedToken.logoURI} alt={firstSelectedToken.name} className="rounded-[50px] w-[30px] h-[30px]" />
+                  <span className="text-white uppercase font-[700] text-[16px]">{firstSelectedToken.symbol}</span>
                   <FiChevronDown className="text-white" />
                 </div>
-                <div className="flex justify-center items-center">
-                  <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600] mr-[4px]">Max</button>
+                <div className="flex justify-center items-center gap-1 flex-1">
+                  <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]">Max</button>
                   <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]">Half</button>
                 </div>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end w-[200px]">
                 <input
                   type="number"
-                  className="p-[12px] bg-transparent text-white border-0 justify-center w-1/3 flex items-center outline-0 appearance-none font-[600] text-[18px]"
+                  className="p-[12px] bg-transparent text-white border-0 w-full outline-0 appearance-none font-[600] text-[18px]"
                   value={val1}
                   onChange={(e) => setVal1(e.target.valueAsNumber || 0.0)}
                 />
@@ -139,26 +159,42 @@ export default function Swap() {
             </div>
             <div className="flex justify-between w-full mt-[10px]">
               <div className="flex justify-center items-center">
-                <div className="flex justify-center items-center border-r border-white pr-[4px] mr-[4px]">
-                  <img src="/images/brise.png" alt="vefi_logo" className="rounded-[50px] w-[40px] h-[40px]" />
-                  <span className="text-white uppercase font-[700] text-[16px] mr-[20px] ml-[20px]">BRISE</span>
+                <div
+                  onClick={() => setIsSecondTokensListModalVisible(true)}
+                  className="flex justify-start items-center border-r border-white p-4 cursor-pointer gap-1 w-[150px]"
+                >
+                  <img src={secondSelectedToken.logoURI} alt={secondSelectedToken.name} className="rounded-[50px] w-[30px] h-[30px]" />
+                  <span className="text-white uppercase font-[700] text-[16px]">{secondSelectedToken.symbol}</span>
                   <FiChevronDown className="text-white" />
                 </div>
-                <div className="flex justify-center items-center">
-                  <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600] mr-[4px]">Max</button>
+                <div className="flex justify-center items-center flex-1 gap-1">
+                  <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]">Max</button>
                   <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]">Half</button>
                 </div>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end w-[200px]">
                 <input
                   type="number"
-                  className="p-[12px] bg-transparent text-white border-0 justify-center w-1/3 flex items-center outline-0 appearance-none font-[600] text-[18px]"
+                  className="p-[12px] bg-transparent text-white border-0 w-full outline-0 appearance-none font-[600] text-[18px]"
                   value={val2}
                   onChange={(e) => setVal2(e.target.valueAsNumber || 0.0)}
                 />
               </div>
             </div>
           </div>
+        </div>
+        <div className="flex justify-center w-full items-center my-2">
+          {!pairError ? (
+            <div className="flex justify-center w-full items-center font-poppins gap-3">
+              <span className="text-white font-[300]">1 {firstSelectedToken.symbol}</span>
+              <MdOutlineSwapHoriz className="text-white font-[400] text-[30px]" />
+              <span className="text-white font-[300]">
+                {token1Price} {secondSelectedToken.symbol}
+              </span>
+            </div>
+          ) : (
+            <span className="text-red-400 font-Montserrat text-[15px]">{pairError.message}</span>
+          )}
         </div>
         <button className="flex justify-center items-center bg-[#1673b9] py-[14px] px-[10px] rounded-[19px] text-[18px] text-white w-full mt-[54px]">
           <span>Connect Wallet</span>
@@ -168,13 +204,24 @@ export default function Swap() {
   );
   return (
     <>
-      <div className="flex flex-col-reverse md:flex-row px-[20px] justify-between w-full gap-3 md:gap-7">
+      <div className="flex flex-col-reverse md:flex-row justify-between w-full gap-3 md:gap-7">
         <ChartView />
 
         <FormView />
 
         <SwapSettingsModal isOpen={isSettingsModalVisible} onClose={() => setIsSettingsModalVisible(false)} />
-        <TokensListModal isVisible={isTokensListModalVisible} onClose={() => setIsTokensListModalVisible(false)} />
+        <TokensListModal
+          isVisible={isFirstTokensListModalVisible}
+          onClose={() => setIsFirstTokensListModalVisible(false)}
+          onTokenSelected={(token) => setFirstSelectedToken(token)}
+          selectedToken={firstSelectedToken}
+        />
+        <TokensListModal
+          isVisible={isSecondTokensListModalVisible}
+          onClose={() => setIsSecondTokensListModalVisible(false)}
+          onTokenSelected={(token) => setSecondSelectedToken(token)}
+          selectedToken={secondSelectedToken}
+        />
       </div>
     </>
   );

@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
 import { FiSearch, FiX } from 'react-icons/fi';
 import _ from 'lodash';
 import { useAPIContext } from '../../contexts/api';
+import { ListingModel } from '../../api/models/dex';
 
 type ITokensListModalProps = {
   onClose: () => void;
   isVisible: boolean;
+  onTokenSelected: (token: ListingModel) => void;
+  selectedToken?: ListingModel;
 };
 
-export default function TokensListModal({ onClose, isVisible }: ITokensListModalProps) {
+export default function TokensListModal({ onClose, isVisible, onTokenSelected, selectedToken }: ITokensListModalProps) {
   const { tokensListing } = useAPIContext();
   return (
     <Transition appear show={isVisible}>
@@ -45,9 +47,21 @@ export default function TokensListModal({ onClose, isVisible }: ITokensListModal
                   </div>
                 </div>
                 {_.map(tokensListing, (model, index) => (
-                  <button key={index} className="flex justify-center items-start px-0 w-full overflow-auto font-poppins">
+                  <button
+                    disabled={selectedToken && _.isEqual(selectedToken, model)}
+                    onClick={() => {
+                      onTokenSelected(model);
+                      onClose();
+                    }}
+                    key={index}
+                    className="flex justify-center items-start px-0 w-full overflow-auto font-poppins"
+                  >
                     <div className="bg-[#161525]/[.6] rounded-tr-[15px] w-[60px] h-full p-0 flex flex-col">
-                      <div className="bg-transparent w-full flex justify-center py-4 px-2">
+                      <div
+                        className={`${
+                          selectedToken && _.isEqual(selectedToken, model) ? 'bg-black/[.7]' : 'bg-transparent'
+                        } w-full flex justify-center py-4 px-2`}
+                      >
                         <div className="bg-white w-[30px] h-[30px] rounded-[50px] flex justify-center">
                           <img src={model.logoURI} alt={model.symbol} className="w-full h-full" />
                         </div>

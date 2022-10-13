@@ -9,7 +9,13 @@
     "format": "prettier --write **/**.{css,js,json,ts,tsx}"
   },
   "dependencies": {
+    "@ethersproject/address": "^5.7.0",
     "@ethersproject/bytes": "^5.7.0",
+    "@ethersproject/constants": "^5.7.0",
+    "@ethersproject/contracts": "^5.7.0",
+    "@ethersproject/networks": "^5.7.1",
+    "@ethersproject/providers": "^5.7.1",
+    "@ethersproject/solidity": "^5.7.0",
     "@ethersproject/units": "^5.7.0",
     "@headlessui/react": "^1.7.0",
     "@web3-react/core": "^6.1.9",
@@ -25,6 +31,7 @@
     "lodash": "^4.17.21",
     "next": "12.1.6",
     "postcss": "^8.4.16",
+    "quasar-sdk-core": "^1.0.0",
     "react": "18.1.0",
     "react-chartjs-2": "^4.3.1",
     "react-dom": "18.1.0",
