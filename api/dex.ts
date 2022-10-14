@@ -14,7 +14,7 @@ export const fetchListing = (chainId: number) => {
 export const fetchPriceHistoryForPair = (pair: string, chainId: number, period?: number) => {
   return new Promise<Array<SyncModel>>((resolve, reject) => {
     rootDAppClient
-      .get(`/dex/price_history/${pair}/${hexValue(chainId)}${period ?? `?period=${period}`}`)
+      .get(`/dex/price_history/${pair}/${hexValue(chainId)}${period ? `?period=${period}` : ''}`)
       .then((res) => resolve(res.data.result))
       .catch(reject);
   });

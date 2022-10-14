@@ -1,23 +1,21 @@
 import React from 'react';
+import _ from 'lodash';
 import { Chart as ChartJs, LineElement, PointElement, CategoryScale, LinearScale, Filler, Tooltip, ChartData } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import faker from 'faker';
 
 ChartJs.register(LineElement, PointElement, CategoryScale, LinearScale, Filler, Tooltip);
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+type IChartProps = {
+  dataset: any[];
+};
 
-// type IChartProps = {
-//   data: any[]
-// };
-
-export default function Chart() {
+export default function Chart({ dataset }: IChartProps) {
   const data: ChartData<'line', number[], string> = {
-    labels,
+    labels: _.map(dataset, (item) => item.label()),
     datasets: [
       {
         fill: true,
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+        data: _.map(dataset, (item) => item.price),
         borderColor: '#ffeb82',
         borderWidth: 1,
         pointBorderWidth: 0,
