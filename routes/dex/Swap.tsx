@@ -12,7 +12,14 @@ import TokensListModal from '../../components/TokensListModal';
 import { ListingModel } from '../../api/models/dex';
 import { useAPIContext } from '../../contexts/api';
 import { useWeb3Context } from '../../contexts/web3';
-import { computePair, getToken1Price, fetchTokenBalanceForConnectedWallet, fetchChartData } from '../../hooks/dex';
+import {
+  computePair,
+  getToken1Price,
+  fetchTokenBalanceForConnectedWallet,
+  fetchChartData,
+  getOutputAmount,
+  calculatePercentageChange
+} from '../../hooks/dex';
 
 enum ChartPeriod {
   DAY,
@@ -24,7 +31,6 @@ enum ChartPeriod {
 export default function Swap() {
   const [val1, setVal1] = useState<number>(0.0);
   const [val2, setVal2] = useState<number>(0.0);
-  const [isChartAreaMaximized, setIsChartAreaMaximized] = useState<boolean>(false);
   const [chartPeriod, setChartPeriod] = useState<ChartPeriod>(ChartPeriod.DAY);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState<boolean>(false);
   const [isFirstTokensListModalVisible, setIsFirstTokensListModalVisible] = useState<boolean>(false);
@@ -47,6 +53,15 @@ export default function Swap() {
     error: chartError
   } = fetchChartData(firstSelectedToken, secondSelectedToken, chainId || 97, _.multiply(chartPeriodInt, 1000));
 
+  const outputAmount = getOutputAmount(firstSelectedToken, secondSelectedToken, val1, chainId || 97);
+
+  const { token0PercentageChange, token1PercentageChange, tokensPercentageChangeType } = calculatePercentageChange(
+    firstSelectedToken,
+    secondSelectedToken,
+    chainId || 97,
+    _.multiply(chartPeriodInt, 1000)
+  );
+
   const switchSelectedTokens = useCallback(() => {
     const token1 = firstSelectedToken;
     const token2 = secondSelectedToken;
@@ -62,12 +77,16 @@ export default function Swap() {
     }
   }, [tokensListing]);
 
+  useEffect(() => {
+    setVal2(outputAmount);
+  }, [outputAmount]);
+
   return (
     <>
       <div className="flex flex-col-reverse md:flex-row justify-between w-full gap-3 md:gap-7">
         {/* Chart view */}
-        <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] pt-[32px] flex justify-center items-center w-full md:w-2/3 overflow-auto md:h-[inherit]">
-          <div className={`flex flex-col flex-1 justify-evenly items-center w-full md:w-[757px] ${isChartAreaMaximized ? 'h-screen' : 'h-full'}`}>
+        <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] pt-[30px] flex justify-center items-center w-full md:w-2/3 overflow-auto md:h-[inherit]">
+          <div className="flex flex-col flex-1 justify-evenly items-center w-full md:w-[757px] h-full">
             <div className="flex justify-between items-center w-full">
               <div className="flex justify-between items-center w-1/3">
                 <div className="flex justify-center w-1/2">
@@ -75,7 +94,7 @@ export default function Swap() {
                   <img src={secondSelectedToken.logoURI} alt={secondSelectedToken.name} className="rounded-[50px] h-[30px]" />
                 </div>
                 <div className="flex justify-center">
-                  <span className="text-white text-[16px] font-[700]">
+                  <span className="text-white text-[16px] font-[700] font-Montserrat">
                     {firstSelectedToken.symbol}/{secondSelectedToken.symbol}
                   </span>
                 </div>
@@ -90,22 +109,40 @@ export default function Swap() {
                   </button>
                 </div>
               </div>
-              <button onClick={() => setIsChartAreaMaximized((val) => !val)} className="bg-transparent text-[white] flex justify-center text-[20px]">
-                {isChartAreaMaximized ? <FiMinimize2 /> : <FiMaximize2 />}
-              </button>
             </div>
             <div className="flex justify-between items-center w-full mt-[23px]">
               <div className="flex justify-between items-center md:w-2/5 gap-1">
                 <div className="flex justify-center w-1/3">
-                  <span className="text-white font-[700] text-[16px] md:text-[40px]">{token1Price}</span>
+                  <span className="text-white font-[700] text-[16px] md:text-[40px] font-Montserrat">{token1Price}</span>
                 </div>
                 <div className="flex justify-center w-1/3">
-                  <span className="text-white text-[16px] font-[700]">
+                  <span className="text-white text-[16px] font-[700] font-Montserrat">
                     {firstSelectedToken.symbol}/{secondSelectedToken.symbol}
                   </span>
                 </div>
                 <div className="flex justify-center w-1/3">
-                  <span className="text-[#da004e] font-[700] text-[16px] w-full">-1.638(-2.35%)</span>
+                  <span
+                    className={`${
+                      tokensPercentageChangeType.token0PChangeType === 'INCREASE'
+                        ? 'text-green-500'
+                        : tokensPercentageChangeType.token0PChangeType === 'DECREASE'
+                        ? 'text-red-500'
+                        : 'text-yellow-500'
+                    } font-[700] text-[16px] font-Montserrat`}
+                  >
+                    {token0PercentageChange}%
+                  </span>
+                  <span
+                    className={`${
+                      tokensPercentageChangeType.token1PChangeType === 'INCREASE'
+                        ? 'text-green-500'
+                        : tokensPercentageChangeType.token1PChangeType === 'DECREASE'
+                        ? 'text-red-500'
+                        : 'text-yellow-500'
+                    } font-[700] text-[16px] font-Montserrat`}
+                  >
+                    ({token1PercentageChange}%)
+                  </span>
                 </div>
               </div>
               <div className="flex flex-col md:flex-row justify-center bg-[#d9d9d9]/[.1] border-[#d9d9d9] border-[1px] rounded-[18.5px]">
@@ -148,7 +185,7 @@ export default function Swap() {
               </div>
             </div>
             {chartDataLoading ? (
-              <Rings height={200} width={200} wrapperClass="w-full flex justify-center items-center bg-gray-400" />
+              <Rings height={200} width={200} wrapperClass="w-full flex justify-center items-center bg-[#c0c0c0]" color="#5f9ea0" />
             ) : (
               <Chart dataset={chartData} />
             )}
@@ -156,8 +193,8 @@ export default function Swap() {
         </div>
 
         {/* Form view */}
-        <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] flex justify-center items-center py-[19px] w-full md:h-[inherit] md:w-1/3">
-          <div className="flex flex-col justify-evenly items-center w-full">
+        <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] flex justify-center items-center py-[19px] w-full md:w-1/3 md:max-h-[600px]">
+          <div className="flex flex-col justify-evenly items-center w-full h-full">
             <div className="flex justify-between w-full">
               <div>
                 <button className="bg-transparent text-white text-[23px]">
@@ -239,12 +276,21 @@ export default function Swap() {
             </div>
             <div className="flex justify-center w-full items-center my-2">
               {!pairError ? (
-                <div className="flex justify-center w-full items-center font-poppins gap-3">
-                  <span className="text-white font-[300]">1 {secondSelectedToken.symbol}</span>
-                  <MdOutlineSwapHoriz className="text-white font-[400] text-[30px]" />
-                  <span className="text-white font-[300]">
-                    {token1Price} {firstSelectedToken.symbol}
-                  </span>
+                <div className="flex justify-center w-full items-center flex-col gap-2">
+                  <div className="flex justify-between w-full items-center font-poppins gap-3">
+                    <span className="text-white font-[300]">1 {secondSelectedToken.symbol}</span>
+                    <MdOutlineSwapHoriz className="text-white font-[400] text-[30px]" />
+                    <span className="text-white font-[300]">
+                      {token1Price} {firstSelectedToken.symbol}
+                    </span>
+                  </div>
+                  <div className="flex justify-between w-full items-center font-poppins gap-3">
+                    <span className="text-white font-[300]">You get:</span>
+                    {/* <MdOutlineSwapHoriz className="text-white font-[400] text-[30px]" /> */}
+                    <span className="text-white font-[300]">
+                      {outputAmount} {secondSelectedToken.symbol}
+                    </span>
+                  </div>
                 </div>
               ) : (
                 <span className="text-red-400 font-Montserrat text-[15px]">{pairError.message}</span>
@@ -255,7 +301,7 @@ export default function Swap() {
                 <span>Connect Wallet</span>
               </button>
             ) : (
-              <div className="flex justify-center gap-2 items-center w-full flex-col mt-[54px]">
+              <div className="flex justify-center gap-2 items-center w-full flex-col mt-[40px]">
                 {firstSelectedToken.address !== AddressZero && (
                   <button
                     disabled={val1 <= 0}
@@ -281,13 +327,13 @@ export default function Swap() {
           isVisible={isFirstTokensListModalVisible}
           onClose={() => setIsFirstTokensListModalVisible(false)}
           onTokenSelected={(token) => setFirstSelectedToken(token)}
-          selectedToken={firstSelectedToken}
+          selectedTokens={[firstSelectedToken, secondSelectedToken]}
         />
         <TokensListModal
           isVisible={isSecondTokensListModalVisible}
           onClose={() => setIsSecondTokensListModalVisible(false)}
           onTokenSelected={(token) => setSecondSelectedToken(token)}
-          selectedToken={secondSelectedToken}
+          selectedTokens={[firstSelectedToken, secondSelectedToken]}
         />
       </div>
     </>

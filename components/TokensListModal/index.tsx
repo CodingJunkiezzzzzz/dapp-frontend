@@ -10,10 +10,10 @@ type ITokensListModalProps = {
   onClose: () => void;
   isVisible: boolean;
   onTokenSelected: (token: ListingModel) => void;
-  selectedToken?: ListingModel;
+  selectedTokens?: Array<ListingModel>;
 };
 
-export default function TokensListModal({ onClose, isVisible, onTokenSelected, selectedToken }: ITokensListModalProps) {
+export default function TokensListModal({ onClose, isVisible, onTokenSelected, selectedTokens }: ITokensListModalProps) {
   const { tokensListing } = useAPIContext();
   return (
     <Transition appear show={isVisible}>
@@ -51,7 +51,7 @@ export default function TokensListModal({ onClose, isVisible, onTokenSelected, s
                   <TokensListItem
                     key={index}
                     model={model}
-                    disabled={_.isEqual(selectedToken, model)}
+                    disabled={_.includes(selectedTokens, model)}
                     onClick={() => {
                       onTokenSelected(model);
                       onClose();
