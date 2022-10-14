@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { FiSettings, FiChevronDown, FiMaximize2, FiMinimize2 } from 'react-icons/fi';
 import { IoMdRefreshCircle } from 'react-icons/io';
 import { MdSwapVerticalCircle, MdOutlineSwapHoriz } from 'react-icons/md';
+import { Rings } from 'react-loader-spinner';
 import { AddressZero } from '@ethersproject/constants';
 import _ from 'lodash';
 import Chart from '../../components/Chart';
@@ -40,7 +41,11 @@ export default function Swap() {
 
   const balance1 = fetchTokenBalanceForConnectedWallet(firstSelectedToken);
   const balance2 = fetchTokenBalanceForConnectedWallet(secondSelectedToken);
-  const { chartData } = fetchChartData(firstSelectedToken, secondSelectedToken, chainId || 97, _.multiply(chartPeriodInt, 1000));
+  const {
+    chartData,
+    loading: chartDataLoading,
+    error: chartError
+  } = fetchChartData(firstSelectedToken, secondSelectedToken, chainId || 97, _.multiply(chartPeriodInt, 1000));
 
   const switchSelectedTokens = useCallback(() => {
     const token1 = firstSelectedToken;
@@ -142,7 +147,11 @@ export default function Swap() {
                 </ChartToggleButton>
               </div>
             </div>
-            <Chart dataset={chartData} />
+            {chartDataLoading ? (
+              <Rings height={200} width={200} wrapperClass="w-full flex justify-center items-center bg-gray-400" />
+            ) : (
+              <Chart dataset={chartData} />
+            )}
           </div>
         </div>
 
