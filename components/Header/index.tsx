@@ -5,9 +5,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FaWallet, FaDiceSix, FaHandshake } from 'react-icons/fa';
 import { RiMenu4Fill } from 'react-icons/ri';
-import { FiX } from 'react-icons/fi';
+import { FiX, FiChevronDown, FiLogOut, FiCheck } from 'react-icons/fi';
 import { BsCurrencyExchange } from 'react-icons/bs';
 import { SiLaunchpad } from 'react-icons/si';
+import { formatEthAddress } from 'eth-address';
+import { useWeb3Context } from '../../contexts/web3';
+import ProviderSelectModal from '../ProviderSelectModal';
 
 type ActiveLinkProps = LinkProps & {
   children: ReactElement;
@@ -50,8 +53,18 @@ const ActiveLink = ({ children, activeClassName, ...props }: ActiveLinkProps) =>
 
 export default function Header() {
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
+  const [showProviderModal, setShowProviderModal] = useState<boolean>(false);
+  const { active, account, error: web3Error, disconnectWallet } = useWeb3Context();
   return (
     <>
+      {web3Error && (
+        <div className="alert alert-error w-full rounded-[2px]">
+          <div>
+            <FiX />
+            <span className="text-white font-poppins">{web3Error.message}</span>
+          </div>
+        </div>
+      )}
       <div className="bg-gradient-to-r from-[#000000] to-[#161525] w-full font-Montserrat">
         <div className="flex flex-row justify-between px-[38px] py-[16px]">
           <div className="flex justify-center">
@@ -80,9 +93,34 @@ export default function Header() {
             </div>
           </div>
           <div>
-            <button className="hidden md:flex justify-center items-center bg-[#1673b9] py-[9px] px-[10px] rounded-[11px] text-[18px] text-white">
-              <FaWallet /> <span className="text-white text-[18px] ml-[2px]">Connect Wallet</span>
-            </button>
+            {!active ? (
+              <button
+                onClick={() => setShowProviderModal(true)}
+                className="hidden md:flex justify-center items-center bg-[#1673b9] py-[9px] px-[10px] rounded-[11px] text-[18px] text-white"
+              >
+                <FaWallet /> <span className="text-white text-[18px] ml-[2px]">Connect Wallet</span>
+              </button>
+            ) : (
+              <div className="dropdown dropdown-hover">
+                <button
+                  tabIndex={0}
+                  className="hidden md:flex justify-center items-center bg-[#1673b9] py-[9px] px-[10px] rounded-[25px] text-[18px] text-white gap-2"
+                >
+                  <div className="h-[30px] w-[30px] rounded-[25px] flex justify-center items-center border border-white">
+                    <FaWallet />
+                  </div>{' '}
+                  <span className="text-white text-[18px] ml-[2px]">{formatEthAddress(account as string, 4)}</span> <FiChevronDown />
+                </button>
+                <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-[#000]/[0.6] rounded-box w-52 text-white">
+                  <li>
+                    <a onClick={disconnectWallet} className="btn btn-ghost gap-2">
+                      {' '}
+                      <FiLogOut /> Disconnect
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            )}
             <button
               className="md:hidden flex justify-center items-center bg-[#1673b9] py-[9px] px-[10px] rounded-[5px] text-[18px] text-white"
               onClick={() => setShowMobileSidebar((val) => !val)}
@@ -122,10 +160,33 @@ export default function Header() {
             </ActiveLink>
           </div>
         </div>
-        <button className="md:hidden flex justify-center items-center bg-[#1673b9] py-[9px] px-[10px] rounded-[5px] text-[18px] text-white">
-          <FaWallet />
-        </button>
+        {!active ? (
+          <button
+            onClick={() => setShowProviderModal(true)}
+            className="md:hidden flex justify-center items-center bg-[#1673b9] py-[9px] px-[10px] rounded-[5px] text-[18px] text-white"
+          >
+            <FaWallet />
+          </button>
+        ) : (
+          <div className="dropdown dropdown-left">
+            <button
+              tabIndex={0}
+              className="md:hidden flex justify-center items-center bg-green-500 py-[9px] px-[10px] rounded-[5px] text-[18px] text-white"
+            >
+              <FiCheck />
+            </button>
+            <ul tabIndex={1} className="dropdown-content menu p-2 shadow bg-[#000]/[0.6] rounded-box w-52 text-white">
+              <li>
+                <a onClick={disconnectWallet} className="btn btn-ghost gap-2">
+                  {' '}
+                  <FiLogOut /> Disconnect
+                </a>
+              </li>
+            </ul>
+          </div>
+        )}
       </Transition>
+      <ProviderSelectModal isOpen={showProviderModal} onClose={() => setShowProviderModal(false)} />
     </>
   );
 }

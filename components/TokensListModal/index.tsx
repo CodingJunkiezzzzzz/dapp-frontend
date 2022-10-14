@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
-import { FaTimesCircle, FaSearch } from 'react-icons/fa';
 import { FiSearch, FiX } from 'react-icons/fi';
-import Image from 'next/image';
+import _ from 'lodash';
+import { useAPIContext } from '../../contexts/api';
+import { ListingModel } from '../../api/models/dex';
+import TokensListItem from './list';
 
 type ITokensListModalProps = {
   onClose: () => void;
   isVisible: boolean;
+  onTokenSelected: (token: ListingModel) => void;
+  selectedTokens?: Array<ListingModel>;
 };
 
-export default function TokensListModal({ onClose, isVisible }: ITokensListModalProps) {
+export default function TokensListModal({ onClose, isVisible, onTokenSelected, selectedTokens }: ITokensListModalProps) {
+  const { tokensListing } = useAPIContext();
   return (
     <Transition appear show={isVisible}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -43,36 +47,17 @@ export default function TokensListModal({ onClose, isVisible }: ITokensListModal
                     <FiSearch />
                   </div>
                 </div>
-                <div className="flex justify-center items-start px-0 w-full overflow-auto">
-                  <div className="bg-[#161525]/[.6] rounded-tr-[15px] w-[60px] h-full p-0 flex flex-col">
-                    <div className="bg-transparent w-full flex justify-center py-4 px-2">
-                      <div className="bg-white w-[30px] h-[30px] rounded-[50px] flex justify-center">
-                        <img src="/images/bitcoin.png" alt="bitcoin_logo" className="w-full h-full" />
-                      </div>
-                    </div>
-                    <div className="bg-[#000]/[.7] w-full flex justify-center py-4 px-2">
-                      <div className="bg-white w-[30px] h-[30px] rounded-[50px] flex justify-center">
-                        <img src="/images/vefi.png" alt="vefi_logo" className="w-full h-full" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col flex-1 p-0 h-full">
-                    <div className="flex justify-between w-full items-center bg-transparent text-[#dcdcdc] px-[8px]">
-                      <div className="flex flex-col justify-between gap-1">
-                        <span className="font-[700] text-[25px] uppercase">btc</span>
-                        <span className="font-[500] text-[14px]">Bitcoin</span>
-                      </div>
-                      <span className="text-[16px]">0.005</span>
-                    </div>
-                    <div className="flex justify-between w-full items-center bg-[#000]/[.7] text-[#dcdcdc] px-[8px]">
-                      <div className="flex flex-col justify-between gap-1">
-                        <span className="font-[700] text-[25px] uppercase">vef</span>
-                        <span className="font-[500] text-[14px]">Vefi Ecosystem Token</span>
-                      </div>
-                      <span className="text-[16px]">0.005</span>
-                    </div>
-                  </div>
-                </div>
+                {_.map(tokensListing, (model, index) => (
+                  <TokensListItem
+                    key={index}
+                    model={model}
+                    disabled={_.includes(selectedTokens, model)}
+                    onClick={() => {
+                      onTokenSelected(model);
+                      onClose();
+                    }}
+                  />
+                ))}
               </div>
             </Transition.Child>
           </div>

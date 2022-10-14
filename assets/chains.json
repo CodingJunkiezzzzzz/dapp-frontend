@@ -1,0 +1,9 @@
+{
+  "97": {
+    "rpcUrl": "https://data-seed-prebsc-1-s3.binance.org:8545",
+    "name": "Binance Smartchain Testnet",
+    "logoURI": "/images/smartchain.png",
+    "symbol": "tBNB",
+    "explorer": "https://testnet.bscscan.com"
+  }
+}
