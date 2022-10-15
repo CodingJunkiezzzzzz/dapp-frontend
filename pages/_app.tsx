@@ -1,4 +1,5 @@
 import '../styles/global.css';
+import 'react-toastify/dist/ReactToastify.css';
 import type { AppProps } from 'next/app';
 import { Web3ReactProvider } from '@web3-react/core';
 import Web3 from 'web3';

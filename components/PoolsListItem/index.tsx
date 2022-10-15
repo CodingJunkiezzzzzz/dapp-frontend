@@ -16,7 +16,9 @@ export default function UserLPItem({ pair }: any) {
           <div className="avatar">
             <div className="w-8">
               <img
-                src={tokensListingAsDictionary[lpDetails.token0] ? tokensListingAsDictionary[lpDetails.token0].logoURI : ''}
+                src={
+                  tokensListingAsDictionary[lpDetails.token0] ? tokensListingAsDictionary[lpDetails.token0].logoURI : '/images/placeholder_image.svg'
+                }
                 alt={lpDetails.token0}
               />
             </div>
@@ -24,7 +26,9 @@ export default function UserLPItem({ pair }: any) {
           <div className="avatar">
             <div className="w-8">
               <img
-                src={tokensListingAsDictionary[lpDetails.token1] ? tokensListingAsDictionary[lpDetails.token1].logoURI : ''}
+                src={
+                  tokensListingAsDictionary[lpDetails.token1] ? tokensListingAsDictionary[lpDetails.token1].logoURI : '/images/placeholder_image.svg'
+                }
                 alt={lpDetails.token1}
               />
             </div>

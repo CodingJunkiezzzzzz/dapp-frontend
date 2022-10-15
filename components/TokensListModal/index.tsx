@@ -1,11 +1,15 @@
-import React, { Fragment, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { Fragment, useCallback, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { ToastContainer, toast } from 'react-toastify';
 import { FiSearch, FiX } from 'react-icons/fi';
 import _ from 'lodash';
 import { isAddress } from '@ethersproject/address';
+import { Fetcher } from 'quasar-sdk-core';
 import { useAPIContext } from '../../contexts/api';
 import { ListingModel } from '../../api/models/dex';
 import TokensListItem from './list';
+import { useWeb3Context } from '../../contexts/web3';
 
 type ITokensListModalProps = {
   onClose: () => void;
@@ -15,8 +19,29 @@ type ITokensListModalProps = {
 };
 
 export default function TokensListModal({ onClose, isVisible, onTokenSelected, selectedTokens }: ITokensListModalProps) {
-  const { tokensListing } = useAPIContext();
+  const { tokensListing, importToken } = useAPIContext();
+  const { chainId } = useWeb3Context();
   const [searchValue, setSearchValue] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const addTokenUsingSearchValue = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const token = await Fetcher.fetchTokenData(chainId || 97, searchValue);
+      importToken({
+        name: token.name as string,
+        logoURI: '/images/placeholder_image.svg',
+        decimals: token.decimals,
+        address: token.address,
+        symbol: token.symbol as string
+      });
+      setIsLoading(false);
+      toast(`Successfully imported token ${token.symbol}`, { type: 'success' });
+    } catch (error: any) {
+      setIsLoading(false);
+      toast(error.message, { type: 'error' });
+    }
+  }, [chainId, searchValue]);
   return (
     <Transition appear show={isVisible}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -95,11 +120,20 @@ export default function TokensListModal({ onClose, isVisible, onTokenSelected, s
                     <div className="flex justify-center items-center w-full">
                       <span className="text-[red]/50 font-[600] text-[20px]">Empty Search Result!</span>
                     </div>
-                    {isAddress(searchValue) && <button className="btn btn-primary font-Montserrat w-full rounded-[25px]">Import Token</button>}
+                    {isAddress(searchValue) && (
+                      <button
+                        onClick={addTokenUsingSearchValue}
+                        disabled={isLoading}
+                        className={`btn btn-primary font-Montserrat w-full rounded-[25px] ${isLoading ? 'loading' : ''}`}
+                      >
+                        Import Token
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
             </Transition.Child>
+            <ToastContainer position="bottom-center" theme="dark" autoClose={5000} />
           </div>
         </div>
       </Dialog>
