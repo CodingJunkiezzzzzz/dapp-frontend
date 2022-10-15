@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <Web3ContextProvider>
           <DEXSettingsContextProvider>
             <APIContextProvider>
-              <div className="bg-[url('/images/bg.svg')] bg-no-repeat bg-cover h-screen scroll-smooth flex flex-col w-screen overflow-auto">
+              <div className="bg-[url('/images/bg.svg')] bg-no-repeat bg-cover h-screen scroll-smooth flex flex-col w-screen overflow-hidden">
                 <Header />
                 <div className="overflow-auto flex-1 backdrop-opacity-10 backdrop-invert bg-[#000]/70">
                   <Component {...pageProps} />

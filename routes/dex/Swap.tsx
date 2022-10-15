@@ -193,7 +193,7 @@ export default function Swap() {
         </div>
 
         {/* Form view */}
-        <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] flex justify-center items-center py-[19px] w-full md:w-1/3 md:max-h-[600px]">
+        <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] px-[19px] flex justify-center items-center py-[19px] w-full md:w-1/3 md:max-h-[600px] font-Montserrat">
           <div className="flex flex-col justify-evenly items-center w-full h-full">
             <div className="flex justify-between w-full">
               <div>
@@ -207,14 +207,14 @@ export default function Swap() {
                 </button>
               </div>
             </div>
-            <div className="flex flex-col justify-center w-full mt-10">
-              <div className="bg-[#0c0b16] rounded-[12px] flex flex-col w-full px-[23px] py-[9px] justify-evenly">
+            <div className="flex flex-col justify-center w-full mt-10 gap-2">
+              <div className="bg-[#0c0b16] rounded-[12px] flex flex-col w-full px-[23px] py-[9px] justify-evenly gap-2">
                 <div className="flex justify-between w-full">
                   <span className="text-white">From</span>
                   <span className="text-white"> Balance: {balance1}</span>
                 </div>
-                <div className="flex justify-between w-full mt-[10px]">
-                  <div className="flex justify-between items-center">
+                <div className="flex justify-between w-full gap-1">
+                  <div className="flex justify-between items-center gap-1">
                     <div
                       className="flex justify-start items-center border-r border-white p-4 cursor-pointer gap-1 w-[150px]"
                       onClick={() => setIsFirstTokensListModalVisible(true)}
@@ -238,18 +238,18 @@ export default function Swap() {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center items-center my-[9.5px]">
+              <div className="flex justify-center items-center">
                 <button onClick={switchSelectedTokens} className="bg-transparent text-[#ffffff] text-[30px]">
                   <MdSwapVerticalCircle />
                 </button>
               </div>
-              <div className="bg-[#0c0b16] rounded-[12px] flex flex-col w-full px-[23px] py-[9px] justify-evenly">
+              <div className="bg-[#0c0b16] rounded-[12px] flex flex-col w-full px-[23px] py-[9px] justify-evenly gap-2">
                 <div className="flex justify-between w-full">
                   <span className="text-white">To</span>
                   <span className="text-white"> Balance: {balance2}</span>
                 </div>
-                <div className="flex justify-between w-full mt-[10px]">
-                  <div className="flex justify-center items-center">
+                <div className="flex justify-between w-full gap-1">
+                  <div className="flex justify-center items-center gap-1">
                     <div
                       onClick={() => setIsSecondTokensListModalVisible(true)}
                       className="flex justify-start items-center border-r border-white p-4 cursor-pointer gap-1 w-[150px]"

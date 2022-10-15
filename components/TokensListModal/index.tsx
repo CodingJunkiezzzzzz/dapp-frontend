@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { FiSearch, FiX } from 'react-icons/fi';
 import _ from 'lodash';
+import { isAddress } from '@ethersproject/address';
 import { useAPIContext } from '../../contexts/api';
 import { ListingModel } from '../../api/models/dex';
 import TokensListItem from './list';
@@ -15,6 +16,7 @@ type ITokensListModalProps = {
 
 export default function TokensListModal({ onClose, isVisible, onTokenSelected, selectedTokens }: ITokensListModalProps) {
   const { tokensListing } = useAPIContext();
+  const [searchValue, setSearchValue] = useState<string>('');
   return (
     <Transition appear show={isVisible}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -43,21 +45,59 @@ export default function TokensListModal({ onClose, isVisible, onTokenSelected, s
                 </div>
                 <div className="flex justify-center items-center px-10 py-10">
                   <div className="bg-[#000]/50 rounded-[20px] py-2 flex justify-center items-center gap-1 px-4">
-                    <input className="bg-transparent outline-0" placeholder="Search token by address or name" />
+                    <input
+                      type="text"
+                      value={searchValue}
+                      onChange={(e) => setSearchValue(e.target.value)}
+                      className="bg-transparent outline-0 font-poppins"
+                      placeholder="Search token by address or name"
+                    />
                     <FiSearch />
                   </div>
                 </div>
-                {_.map(tokensListing, (model, index) => (
-                  <TokensListItem
-                    key={index}
-                    model={model}
-                    disabled={_.includes(selectedTokens, model)}
-                    onClick={() => {
-                      onTokenSelected(model);
-                      onClose();
-                    }}
-                  />
-                ))}
+                {searchValue.replace(/\s/g, '').length > 0 &&
+                _.filter(
+                  tokensListing,
+                  (model) =>
+                    model.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
+                    model.address.toLowerCase().startsWith(searchValue.toLowerCase())
+                ).length > 0 ? (
+                  _.filter(
+                    tokensListing,
+                    (model) =>
+                      model.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
+                      model.address.toLowerCase().startsWith(searchValue.toLowerCase())
+                  ).map((model, index) => (
+                    <TokensListItem
+                      key={index}
+                      model={model}
+                      disabled={_.includes(selectedTokens, model)}
+                      onClick={() => {
+                        onTokenSelected(model);
+                        onClose();
+                      }}
+                    />
+                  ))
+                ) : searchValue.replace(/\s/g, '').length === 0 ? (
+                  _.map(tokensListing, (model, index) => (
+                    <TokensListItem
+                      key={index}
+                      model={model}
+                      disabled={_.includes(selectedTokens, model)}
+                      onClick={() => {
+                        onTokenSelected(model);
+                        onClose();
+                      }}
+                    />
+                  ))
+                ) : (
+                  <div className="flex justify-center items-center w-full flex-col gap-2 px-2 py-2">
+                    <div className="flex justify-center items-center w-full">
+                      <span className="text-[red]/50 font-[600] text-[20px]">Empty Search Result!</span>
+                    </div>
+                    {isAddress(searchValue) && <button className="btn btn-primary font-Montserrat w-full rounded-[25px]">Import Token</button>}
+                  </div>
+                )}
               </div>
             </Transition.Child>
           </div>

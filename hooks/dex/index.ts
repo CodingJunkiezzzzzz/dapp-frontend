@@ -269,3 +269,51 @@ export const calculatePercentageChange = (token0: ListingModel, token1: ListingM
     tokensPercentageChangeType
   };
 };
+
+export const obtainLPDetailsFromPair = (pair: string, chainId: number, account: string) => {
+  const [lpDetails, setLpDetails] = useState({
+    id: '',
+    token0: '',
+    token1: '',
+    token0Symbol: '',
+    token1Symbol: '',
+    accountBalance: 0
+  });
+
+  useEffect(() => {
+    if (!!pair && !!account) {
+      (async () => {
+        try {
+          const url = chains[chainId as unknown as keyof typeof chains].rpcUrl;
+          const pairAbiInterface = new Interface(pairAbi);
+          const erc20AbiInterface = new Interface(erc20Abi);
+          const token0Hash = pairAbiInterface.getSighash('token0()');
+          const token1Hash = pairAbiInterface.getSighash('token1()');
+          const symbolHash = erc20AbiInterface.getSighash('symbol()');
+          const balanceOf = erc20AbiInterface.encodeFunctionData('balanceOf(address)', [account]);
+
+          const token0Call = await rpcCall(url, { method: 'eth_call', params: [{ to: pair, data: token0Hash }, 'latest'] });
+          const token1Call = await rpcCall(url, { method: 'eth_call', params: [{ to: pair, data: token1Hash }, 'latest'] });
+          const balanceOfCall = await rpcCall(url, { method: 'eth_call', params: [{ to: pair, data: balanceOf }, 'latest'] });
+
+          let token0SymbolCall = await rpcCall(url, { method: 'eth_call', params: [{ to: hexStripZeros(token0Call), data: symbolHash }, 'latest'] });
+          let token1SymbolCall = await rpcCall(url, { method: 'eth_call', params: [{ to: hexStripZeros(token1Call), data: symbolHash }, 'latest'] });
+          [token0SymbolCall] = erc20AbiInterface.decodeFunctionResult('symbol()', token0SymbolCall);
+          [token1SymbolCall] = erc20AbiInterface.decodeFunctionResult('symbol()', token1SymbolCall);
+
+          setLpDetails({
+            id: pair,
+            token0: hexStripZeros(token0Call),
+            token1: hexStripZeros(token1Call),
+            token0Symbol: token0SymbolCall,
+            token1Symbol: token1SymbolCall,
+            accountBalance: parseFloat(formatEther(balanceOfCall))
+          });
+        } catch (error: any) {
+          console.log(error);
+        }
+      })();
+    }
+  }, [pair, chainId, account]);
+  return lpDetails;
+};
