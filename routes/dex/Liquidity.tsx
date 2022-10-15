@@ -1,7 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import assert from 'assert';
 import _ from 'lodash';
 import { FiSettings, FiPlus, FiChevronDown } from 'react-icons/fi';
 import { IoMdRefreshCircle, IoIosUndo } from 'react-icons/io';
+import { ToastContainer, toast } from 'react-toastify';
+import { Fetcher, Pair, Route, TokenAmount, Trade, WETH } from 'quasar-sdk-core';
+import { Contract } from '@ethersproject/contracts';
+import { AddressZero } from '@ethersproject/constants';
+import { Web3Provider } from '@ethersproject/providers';
+import { parseUnits } from '@ethersproject/units';
+import { abi as erc20Abi } from 'quasar-v1-core/artifacts/@openzeppelin/contracts/token/ERC20/ERC20.sol/ERC20.json';
+import { abi as routerAbi } from 'quasar-v1-periphery/artifacts/contracts/QuasarRouter.sol/QuasarRouter.json';
 import { useAPIContext } from '../../contexts/api';
 import UserLPItem from '../../components/PoolsListItem';
 import { useWeb3Context } from '../../contexts/web3';
@@ -9,6 +18,9 @@ import { ListingModel } from '../../api/models/dex';
 import { fetchTokenBalanceForConnectedWallet } from '../../hooks/dex';
 import SwapSettingsModal from '../../components/SwapSettingsModal';
 import TokensListModal from '../../components/TokensListModal';
+import { useDEXSettingsContext } from '../../contexts/dex/settings';
+import routers from '../../assets/routers.json';
+import { addToMetamask } from '../../utils';
 
 enum LiquidityRoutes {
   ADD_LIQUIDITY,
@@ -72,14 +84,120 @@ const AddLiquidityRoute = ({ routeChange }: any) => {
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState<boolean>(false);
   const [isFirstTokensListModalVisible, setIsFirstTokensListModalVisible] = useState<boolean>(false);
   const [isSecondTokensListModalVisible, setIsSecondTokensListModalVisible] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { tokensListing } = useAPIContext();
-  const { chainId, active } = useWeb3Context();
+  const { chainId, active, library, account } = useWeb3Context();
+  const { txDeadlineInMins, gasPrice } = useDEXSettingsContext();
   const [firstSelectedToken, setFirstSelectedToken] = useState<ListingModel>({} as ListingModel);
   const [secondSelectedToken, setSecondSelectedToken] = useState<ListingModel>({} as ListingModel);
 
-  const balance1 = fetchTokenBalanceForConnectedWallet(firstSelectedToken);
-  const balance2 = fetchTokenBalanceForConnectedWallet(secondSelectedToken);
+  const balance1 = fetchTokenBalanceForConnectedWallet(firstSelectedToken, [isLoading]);
+  const balance2 = fetchTokenBalanceForConnectedWallet(secondSelectedToken, [isLoading]);
+
+  const addLiquidity = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const firstIsZero = firstSelectedToken.address === AddressZero;
+      const secondIsZero = secondSelectedToken.address === AddressZero;
+      const t0 = firstIsZero ? WETH[(chainId as keyof typeof WETH) || 97] : await Fetcher.fetchTokenData(chainId || 97, firstSelectedToken.address);
+      const t1 = secondIsZero ? WETH[(chainId as keyof typeof WETH) || 97] : await Fetcher.fetchTokenData(chainId || 97, secondSelectedToken.address);
+      const router = routers[chainId as unknown as keyof typeof routers];
+
+      assert.notDeepEqual(t0, t1, 'Identical tokens');
+
+      const value0 = parseUnits(val1.toString(), t0.decimals).toHexString();
+      const value1 = parseUnits(val2.toString(), t1.decimals).toHexString();
+
+      const provider = new Web3Provider(library?.givenProvider);
+      const token0Contract = new Contract(t0.address, erc20Abi, provider.getSigner());
+      const token1Contract = new Contract(t1.address, erc20Abi, provider.getSigner());
+      const routerContract = new Contract(router, routerAbi, provider.getSigner());
+
+      if (!firstIsZero) {
+        const approvalTx = await token0Contract.approve(router, value0);
+        await approvalTx.wait();
+        toast(`Router approved to spend ${val1} ${t0.symbol}`, { type: 'info' });
+      }
+
+      if (!secondIsZero) {
+        const approvalTx = await token1Contract.approve(router, value1);
+        await approvalTx.wait();
+        toast(`Router approved to spend ${val2} ${t1.symbol}`, { type: 'info' });
+      }
+
+      let liquidityTx: any;
+
+      if (firstIsZero || secondIsZero) {
+        const paths = firstIsZero ? [t0, t1] : [t1, t0];
+        const values = firstIsZero ? [value0, value1] : [value1, value0];
+        // Estimate gas first
+        const gas = await routerContract.estimateGas.addLiquidityETH(
+          paths[1].address,
+          values[1],
+          values[1],
+          values[0],
+          account,
+          `0x${Math.floor(Date.now() / 1000) + _.multiply(txDeadlineInMins, 60)}`,
+          { value: values[0], gasPrice: parseUnits(gasPrice.toString(), 'gwei').toHexString() }
+        );
+        liquidityTx = await routerContract.addLiquidityETH(
+          paths[1].address,
+          values[1],
+          values[1],
+          values[0],
+          account,
+          `0x${Math.floor(Date.now() / 1000) + _.multiply(txDeadlineInMins, 60)}`,
+          { value: values[0], gasLimit: gas.toHexString(), gasPrice: parseUnits(gasPrice.toString(), 'gwei').toHexString() }
+        );
+      } else {
+        const gas = await routerContract.estimateGas.addLiquidity(
+          firstSelectedToken.address,
+          secondSelectedToken.address,
+          value0,
+          value1,
+          value0,
+          value1,
+          account,
+          `0x${Math.floor(Date.now() / 1000) + _.multiply(txDeadlineInMins, 60)}`,
+          { gasPrice: parseUnits(gasPrice.toString(), 'gwei').toHexString() }
+        );
+        liquidityTx = await routerContract.addLiquidity(
+          firstSelectedToken.address,
+          secondSelectedToken.address,
+          value0,
+          value1,
+          value0,
+          value1,
+          account,
+          `0x${Math.floor(Date.now() / 1000) + _.multiply(txDeadlineInMins, 60)}`,
+          { gasPrice: parseUnits(gasPrice.toString(), 'gwei').toHexString(), gasLimit: gas.toHexString() }
+        );
+      }
+
+      await liquidityTx.wait();
+      setIsLoading(false);
+
+      const pair = Pair.getAddress(t0, t1);
+      toast(
+        <div className="flex justify-between items-center w-full gap-2">
+          <span className="text-white font-poppins text-[16px]">Liquidity added successfully!</span>
+          <button
+            onClick={() => {
+              addToMetamask(pair, 'Quasar-LP', 18);
+            }}
+            className="btn btn-primary"
+          >
+            Add LP Token
+          </button>
+        </div>,
+        { type: 'success' }
+      );
+    } catch (error: any) {
+      setIsLoading(false);
+      toast(error.message, { type: 'error' });
+    }
+  }, [account, chainId, firstSelectedToken.address, gasPrice, library?.givenProvider, secondSelectedToken.address, txDeadlineInMins, val1, val2]);
 
   useEffect(() => {
     if (tokensListing.length >= 2) {
@@ -173,10 +291,23 @@ const AddLiquidityRoute = ({ routeChange }: any) => {
             </div>
           </div>
         </div>
-        <button className="flex justify-center items-center bg-[#1673b9] py-[14px] px-[10px] rounded-[19px] text-[18px] text-white w-full mt-[54px]">
-          <span>Connect Wallet</span>
-        </button>
+        {!active ? (
+          <button className="flex justify-center items-center bg-[#1673b9] py-[14px] px-[10px] rounded-[19px] text-[18px] text-white w-full mt-[54px]">
+            <span>Connect Wallet</span>
+          </button>
+        ) : (
+          <button
+            onClick={addLiquidity}
+            disabled={isLoading}
+            className={`flex justify-center items-center bg-[#1673b9] btn py-[14px] px-[10px] rounded-[19px] text-[18px] text-white w-full mt-[54px] ${
+              isLoading ? 'loading' : ''
+            }`}
+          >
+            <span>Add Liquidity</span>
+          </button>
+        )}
       </div>
+      <ToastContainer position="top-right" theme="dark" autoClose={5000} />
       <SwapSettingsModal isOpen={isSettingsModalVisible} onClose={() => setIsSettingsModalVisible(false)} />
       <TokensListModal
         isVisible={isFirstTokensListModalVisible}

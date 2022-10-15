@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import _ from 'lodash';
 import { ListingModel } from '../../api/models/dex';
 import { useWeb3Context } from '../web3';
 import { fetchLiquidityPoolsForUser, fetchListing } from '../../api/dex';
@@ -19,7 +21,9 @@ export const APIContextProvider = ({ children }: any) => {
   const [tokensListingAsDictionary, setTokensListingAsDictionary] = useState<{ [key: string]: ListingModel }>({});
   const [liquidityPoolsForUser, setLiquidityPoolsForUser] = useState<Array<string>>([]);
 
-  const importToken = useCallback((model: ListingModel) => setTokensListing((models) => [...models, model]), []);
+  const importToken = useCallback((model: ListingModel) => {
+    if (!_.includes(tokensListing, model)) setTokensListing((models) => [...models, model]);
+  }, []);
 
   useEffect(() => {
     fetchListing(chainId || 97)

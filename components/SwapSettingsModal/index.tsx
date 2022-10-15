@@ -62,30 +62,30 @@ export default function SwapSettingsModal({ isOpen = false, onClose }: SwapSetti
                         <button
                           type="button"
                           className={`h-7 mr-1 rounded-[10px] p-2 flex items-center justify-center outline-0 text-[12px] text-slate-300 ${
-                            gasPrice === 5 ? 'bg-blue-500' : 'bg-[#26232f]'
+                            gasPrice === 100 ? 'bg-blue-500' : 'bg-[#26232f]'
                           } hover:bg-blue-500`}
-                          onClick={() => changeGasPrice(5)}
+                          onClick={() => changeGasPrice(100)}
                         >
-                          Standard (5)
+                          Standard (100)
                         </button>
 
                         <button
                           type="button"
                           className={`h-7 mr-1 rounded-[10px] p-2 flex items-center justify-center outline-0 text-[12px] text-slate-300 ${
-                            gasPrice === 6 ? 'bg-blue-500' : 'bg-[#26232f]'
+                            gasPrice === 150 ? 'bg-blue-500' : 'bg-[#26232f]'
                           } hover:bg-blue-500`}
-                          onClick={() => changeGasPrice(6)}
+                          onClick={() => changeGasPrice(150)}
                         >
-                          Fast (6)
+                          Fast (150)
                         </button>
                         <button
                           type="button"
                           className={`h-7 mr-1 rounded-[10px] p-2 flex items-center justify-center outline-0 text-[12px] text-slate-300 ${
-                            gasPrice === 7 ? 'bg-blue-500' : 'bg-[#26232f]'
+                            gasPrice === 250 ? 'bg-blue-500' : 'bg-[#26232f]'
                           } hover:bg-blue-500`}
-                          onClick={() => changeGasPrice(7)}
+                          onClick={() => changeGasPrice(250)}
                         >
-                          Super-Fast (7)
+                          Super-Fast (250)
                         </button>
                       </div>
                     </div>
