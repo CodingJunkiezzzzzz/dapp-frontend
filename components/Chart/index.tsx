@@ -11,7 +11,7 @@ type IChartProps = {
 
 export default function Chart({ dataset }: IChartProps) {
   const data: ChartData<'line', number[], string> = {
-    labels: _.map(dataset, (item) => item.label()),
+    labels: _.map(dataset, (item) => item.label),
     datasets: [
       {
         fill: true,

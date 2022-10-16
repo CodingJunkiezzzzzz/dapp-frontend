@@ -4,13 +4,14 @@ import _ from 'lodash';
 import { FiSettings, FiPlus, FiChevronDown } from 'react-icons/fi';
 import { IoMdRefreshCircle, IoIosUndo } from 'react-icons/io';
 import { ToastContainer, toast } from 'react-toastify';
-import { Fetcher, Pair, Route, TokenAmount, Trade, WETH } from 'quasar-sdk-core';
+import { Fetcher, Pair, WETH } from 'quasar-sdk-core';
 import { Contract } from '@ethersproject/contracts';
 import { AddressZero } from '@ethersproject/constants';
 import { Web3Provider } from '@ethersproject/providers';
 import { parseUnits } from '@ethersproject/units';
 import { abi as erc20Abi } from 'quasar-v1-core/artifacts/@openzeppelin/contracts/token/ERC20/ERC20.sol/ERC20.json';
 import { abi as routerAbi } from 'quasar-v1-periphery/artifacts/contracts/QuasarRouter.sol/QuasarRouter.json';
+import useSound from 'use-sound';
 import { useAPIContext } from '../../contexts/api';
 import UserLPItem from '../../components/PoolsListItem';
 import { useWeb3Context } from '../../contexts/web3';
@@ -21,6 +22,8 @@ import TokensListModal from '../../components/TokensListModal';
 import { useDEXSettingsContext } from '../../contexts/dex/settings';
 import routers from '../../assets/routers.json';
 import { addToMetamask } from '../../utils';
+import successFx from '../../assets/sounds/success_sound.mp3';
+import errorFx from '../../assets/sounds/error_sound.mp3';
 
 enum LiquidityRoutes {
   ADD_LIQUIDITY,
@@ -88,12 +91,15 @@ const AddLiquidityRoute = ({ routeChange }: any) => {
 
   const { tokensListing } = useAPIContext();
   const { chainId, active, library, account } = useWeb3Context();
-  const { txDeadlineInMins, gasPrice } = useDEXSettingsContext();
+  const { txDeadlineInMins, gasPrice, playSounds } = useDEXSettingsContext();
   const [firstSelectedToken, setFirstSelectedToken] = useState<ListingModel>({} as ListingModel);
   const [secondSelectedToken, setSecondSelectedToken] = useState<ListingModel>({} as ListingModel);
 
   const balance1 = fetchTokenBalanceForConnectedWallet(firstSelectedToken, [isLoading]);
   const balance2 = fetchTokenBalanceForConnectedWallet(secondSelectedToken, [isLoading]);
+
+  const [playSuccess] = useSound(successFx);
+  const [playError] = useSound(errorFx);
 
   const addLiquidity = useCallback(async () => {
     try {
@@ -179,6 +185,9 @@ const AddLiquidityRoute = ({ routeChange }: any) => {
       setIsLoading(false);
 
       const pair = Pair.getAddress(t0, t1);
+
+      if (playSounds) playSuccess();
+
       toast(
         <div className="flex justify-between items-center w-full gap-2">
           <span className="text-white font-poppins text-[16px]">Liquidity added successfully!</span>
@@ -195,9 +204,23 @@ const AddLiquidityRoute = ({ routeChange }: any) => {
       );
     } catch (error: any) {
       setIsLoading(false);
+      if (playSounds) playError();
       toast(error.message, { type: 'error' });
     }
-  }, [account, chainId, firstSelectedToken.address, gasPrice, library?.givenProvider, secondSelectedToken.address, txDeadlineInMins, val1, val2]);
+  }, [
+    account,
+    chainId,
+    firstSelectedToken.address,
+    gasPrice,
+    library?.givenProvider,
+    playError,
+    playSounds,
+    playSuccess,
+    secondSelectedToken.address,
+    txDeadlineInMins,
+    val1,
+    val2
+  ]);
 
   useEffect(() => {
     if (tokensListing.length >= 2) {
@@ -299,7 +322,7 @@ const AddLiquidityRoute = ({ routeChange }: any) => {
           <button
             onClick={addLiquidity}
             disabled={isLoading}
-            className={`flex justify-center items-center bg-[#1673b9] btn py-[14px] px-[10px] rounded-[19px] text-[18px] text-white w-full mt-[54px] ${
+            className={`flex justify-center font-Montserrat items-center bg-[#1673b9] btn py-[14px] px-[10px] rounded-[19px] text-[18px] text-white w-full mt-[54px] ${
               isLoading ? 'loading' : ''
             }`}
           >

@@ -89,6 +89,29 @@ export const getOutputAmount = (inputToken: ListingModel, outputToken: ListingMo
   return outputAmount;
 };
 
+export const getInputAmount = (inputToken: ListingModel, outputToken: ListingModel, amount: number, chainId: ChainId) => {
+  const [inputAmount, setInputAmount] = useState<number>(0);
+
+  useEffect(() => {
+    if (inputToken && inputToken.address && amount > 0) {
+      (async () => {
+        try {
+          const url = chains[chainId as unknown as keyof typeof chains].rpcUrl;
+          const t0 = inputToken.address === AddressZero ? WETH[chainId] : await Fetcher.fetchTokenData(chainId, inputToken.address, url);
+          const t1 = outputToken.address === AddressZero ? WETH[chainId] : await Fetcher.fetchTokenData(chainId, outputToken.address, url);
+          const exponentiated = _.multiply(amount, 10 ** t1.decimals);
+          const outputTokenAmount = new TokenAmount(t1, `0x${exponentiated.toString(16)}`);
+          const pair = await Fetcher.fetchPairData(t0, t1, url);
+          setInputAmount(parseFloat(pair.getInputAmount(outputTokenAmount)[0].toSignificant(4)));
+        } catch (error: any) {
+          console.log(error);
+        }
+      })();
+    }
+  }, [inputToken, outputToken, amount, chainId]);
+  return inputAmount;
+};
+
 export const fetchTokenBalanceForConnectedWallet = (token: ListingModel, deps: Array<any> = []) => {
   const [balance, setBalance] = useState<string>('0');
   const { active, account, chainId } = useWeb3Context();
@@ -115,10 +138,28 @@ export const fetchTokenBalanceForConnectedWallet = (token: ListingModel, deps: A
   return balance;
 };
 
-export const fetchChartData = (token0: ListingModel, token1: ListingModel, chainId: ChainId, period: number = 60 * 60 * 24 * 1000) => {
+export const fetchChartData = (
+  token0: ListingModel,
+  token1: ListingModel,
+  chainId: ChainId,
+  period: number = 60 * 60 * 24 * 1000,
+  deps: Array<any> = []
+) => {
   const [chartData, setChartData] = useState<any[]>([]);
   const [error, setError] = useState<Error | undefined>(undefined);
   const [loading, setIsLoading] = useState<boolean>(false);
+
+  function labelFromPeriod(date: Date): string {
+    if (_.isEqual(period, 60 * 60 * 24 * 1000)) {
+      return date.toLocaleTimeString();
+    } else if (_.isEqual(period, 60 * 60 * 24 * 7 * 1000)) {
+      return dayLabels[date.getDay()];
+    } else if (_.isEqual(period, 60 * 60 * 24 * 30 * 1000)) {
+      return `${monthLabels[date.getMonth()]} ${date.getDate()}`;
+    } else {
+      return `${date.getFullYear()}`;
+    }
+  }
 
   useEffect(() => {
     if (!!token0 && !!token1 && token0.address && token1.address) {
@@ -139,7 +180,8 @@ export const fetchChartData = (token0: ListingModel, token1: ListingModel, chain
             queryInfo = _.concat(queryInfo, {
               blockNumber: receipt.blockNumber,
               reserve0: item.reserve0,
-              reserve1: item.reserve1
+              reserve1: item.reserve1,
+              timestamp: item.timestamp
             });
           }
 
@@ -150,7 +192,6 @@ export const fetchChartData = (token0: ListingModel, token1: ListingModel, chain
               const pairAbiInterface = new Interface(pairAbi);
               const token0Hash = pairAbiInterface.getSighash('token0()');
 
-              const block = await rpcCall(url, { method: 'eth_getBlockByNumber', params: [query.blockNumber, false] });
               const token0Call = await rpcCall(url, { method: 'eth_call', params: [{ to: pair, data: token0Hash }, 'latest'] });
 
               const [asset0, asset1] = t0.address.toLowerCase() === hexStripZeros(token0Call).toLowerCase() ? [t0, t1] : [t1, t0];
@@ -158,21 +199,11 @@ export const fetchChartData = (token0: ListingModel, token1: ListingModel, chain
               const token1Amount = new TokenAmount(asset1, query.reserve1);
 
               const pairObject = new Pair(token0Amount, token1Amount);
-              const date = new Date(_.multiply(parseInt(block.timestamp), 1000));
+              const date = new Date(query.timestamp);
 
               cData = _.concat(cData, {
-                price: parseFloat(pairObject.priceOf(t1).toSignificant(4)),
-                label: () => {
-                  if (_.isEqual(period, 60 * 60 * 24 * 1000)) {
-                    return date.toLocaleTimeString();
-                  } else if (_.isEqual(period, 60 * 60 * 24 * 7 * 1000)) {
-                    return `${dayLabels[date.getDay()]}`;
-                  } else if (_.isEqual(period, 60 * 60 * 24 * 30 * 1000)) {
-                    return `${monthLabels[date.getMonth()]}`;
-                  } else {
-                    return `${date.getFullYear()}`;
-                  }
-                }
+                price: parseFloat(pairObject.priceOf(t0).toSignificant(4)),
+                label: labelFromPeriod(date)
               });
             } catch (e: any) {
               console.log(e);
@@ -186,7 +217,7 @@ export const fetchChartData = (token0: ListingModel, token1: ListingModel, chain
         }
       })();
     }
-  }, [token0, token1, chainId, period]);
+  }, [token0, token1, chainId, period, ...deps]);
   return { chartData, error, loading };
 };
 
