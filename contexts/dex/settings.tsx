@@ -18,7 +18,7 @@ type DEXSettingsContextType = {
 const DEXSettingsContext = createContext<DEXSettingsContextType>({} as DEXSettingsContextType);
 
 export function DEXSettingsContextProvider({ children }: any) {
-  const [gasPrice, setGasPrice] = useState<number>(5);
+  const [gasPrice, setGasPrice] = useState<number>(100);
   const [slippageTolerance, setSlippageTolerance] = useState<number>(0.1);
   const [txDeadlineInMins, setTxDeadlineInMins] = useState<number>(5);
   const [isExpertMode, setIsExpertMode] = useState<boolean>(false);

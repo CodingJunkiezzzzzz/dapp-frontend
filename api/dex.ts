@@ -19,3 +19,12 @@ export const fetchPriceHistoryForPair = (pair: string, chainId: number, period?:
       .catch(reject);
   });
 };
+
+export const fetchLiquidityPoolsForUser = (chainId: number, account: string) => {
+  return new Promise<Array<string>>((resolve, reject) => {
+    rootDAppClient
+      .get(`/dex/pools/${hexValue(chainId)}/${account}`)
+      .then((res) => resolve(res.data.result))
+      .catch(reject);
+  });
+};
