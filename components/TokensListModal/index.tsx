@@ -69,12 +69,12 @@ export default function TokensListModal({ onClose, isVisible, onTokenSelected, s
                   </div>
                 </div>
                 <div className="flex justify-center items-center px-10 py-10">
-                  <div className="bg-[#000]/50 rounded-[20px] py-2 flex justify-center items-center gap-1 px-4">
+                  <div className="bg-[#000]/50 rounded-[20px] py-2 flex justify-center items-center gap-1 px-4 w-full">
                     <input
                       type="text"
                       value={searchValue}
                       onChange={(e) => setSearchValue(e.target.value)}
-                      className="bg-transparent outline-0 font-poppins"
+                      className="bg-transparent outline-0 font-poppins max-w-[200px] md:w-[500px]"
                       placeholder="Search token by address or name"
                     />
                     <FiSearch />

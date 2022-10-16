@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react';
 import assert from 'assert';
 import _ from 'lodash';
@@ -16,7 +17,7 @@ import { useAPIContext } from '../../contexts/api';
 import UserLPItem from '../../components/PoolsListItem';
 import { useWeb3Context } from '../../contexts/web3';
 import { ListingModel } from '../../api/models/dex';
-import { fetchTokenBalanceForConnectedWallet } from '../../hooks/dex';
+import { computePair, fetchTokenBalanceForConnectedWallet } from '../../hooks/dex';
 import SwapSettingsModal from '../../components/SwapSettingsModal';
 import TokensListModal from '../../components/TokensListModal';
 import { useDEXSettingsContext } from '../../contexts/dex/settings';
@@ -27,7 +28,8 @@ import errorFx from '../../assets/sounds/error_sound.mp3';
 
 enum LiquidityRoutes {
   ADD_LIQUIDITY,
-  LIQUIDITY_POOLS
+  LIQUIDITY_POOLS,
+  FIND_OTHER_LP_TOKENS
 }
 
 const LPRoute = ({ routeChange }: any) => {
@@ -63,14 +65,17 @@ const LPRoute = ({ routeChange }: any) => {
             )}
             <span className="text-white">Don&apos;t see a pool you&apos;ve joined?</span>
             <div className="mt-[36px] w-full">
-              <button className="border-[#1673b9] border-[2px] rounded-[19px] w-full py-[13px] px-[17px] text-[#1673b9] text-[18px] font-[600] flex justify-center">
+              <button
+                onClick={() => routeChange(LiquidityRoutes.FIND_OTHER_LP_TOKENS)}
+                className="border-[#1673b9] border-[2px] rounded-[19px] w-full py-[13px] px-[17px] text-[#1673b9] text-[18px] font-[600] flex justify-center"
+              >
                 <span>Find other LP tokens</span>
               </button>
             </div>
           </div>
         </div>
         <button
-          onClick={routeChange}
+          onClick={() => routeChange(LiquidityRoutes.ADD_LIQUIDITY)}
           className="flex justify-center items-center bg-[#1673b9] py-[14px] px-[62px] rounded-[19px] text-[18px] text-white w-full mt-[54px]"
         >
           <FiPlus /> <span className="ml-[16px]">Add Liquidity</span>
@@ -234,7 +239,7 @@ const AddLiquidityRoute = ({ routeChange }: any) => {
       <div className="flex flex-col justify-evenly items-center w-full">
         <div className="flex justify-between w-full">
           <div>
-            <button onClick={routeChange} className="bg-transparent text-white text-[23px]">
+            <button onClick={() => routeChange(LiquidityRoutes.LIQUIDITY_POOLS)} className="bg-transparent text-white text-[23px]">
               <IoIosUndo />
             </button>
           </div>
@@ -264,8 +269,18 @@ const AddLiquidityRoute = ({ routeChange }: any) => {
                   <FiChevronDown className="text-white" />
                 </div>
                 <div className="flex justify-center items-center gap-1 flex-1">
-                  <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]">Max</button>
-                  <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]">Half</button>
+                  <button
+                    onClick={() => setVal1(parseFloat(balance1))}
+                    className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]"
+                  >
+                    Max
+                  </button>
+                  <button
+                    onClick={() => setVal1(_.multiply(0.5, parseFloat(balance1)))}
+                    className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]"
+                  >
+                    Half
+                  </button>
                 </div>
               </div>
               <div className="flex justify-end w-[200px]">
@@ -299,8 +314,18 @@ const AddLiquidityRoute = ({ routeChange }: any) => {
                   <FiChevronDown className="text-white" />
                 </div>
                 <div className="flex justify-center items-center flex-1 gap-1">
-                  <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]">Max</button>
-                  <button className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]">Half</button>
+                  <button
+                    onClick={() => setVal2(parseFloat(balance2))}
+                    className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]"
+                  >
+                    Max
+                  </button>
+                  <button
+                    onClick={() => setVal2(_.multiply(0.5, parseFloat(balance2)))}
+                    className="p-[2px] bg-[#2775ca] opacity-[.19] text-[#c6c3c3] text-[10px] font-[600]"
+                  >
+                    Half
+                  </button>
                 </div>
               </div>
               <div className="flex justify-end w-[200px]">
@@ -348,12 +373,110 @@ const AddLiquidityRoute = ({ routeChange }: any) => {
   );
 };
 
+const FindOtherLPRoute = ({ routeChange }: any) => {
+  const [firstSelectedToken, setFirstSelectedToken] = useState<ListingModel>({} as ListingModel);
+  const [secondSelectedToken, setSecondSelectedToken] = useState<ListingModel>({} as ListingModel);
+  const [isImportLoading, setIsImportLoading] = useState<boolean>(false);
+  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState<boolean>(false);
+  const [isFirstTokensListModalVisible, setIsFirstTokensListModalVisible] = useState<boolean>(false);
+  const [isSecondTokensListModalVisible, setIsSecondTokensListModalVisible] = useState<boolean>(false);
+
+  const { tokensListing, importPool, liquidityPoolsForUser } = useAPIContext();
+  const { chainId } = useWeb3Context();
+  const { pair, error: pairError } = computePair(firstSelectedToken, secondSelectedToken, chainId || 97);
+
+  const addToPools = useCallback(() => {
+    setIsImportLoading(true);
+    importPool(pair);
+    setIsImportLoading(false);
+  }, [pair]);
+
+  useEffect(() => {
+    if (tokensListing.length >= 2) {
+      setFirstSelectedToken(tokensListing[0]);
+      setSecondSelectedToken(tokensListing[1]);
+    }
+  }, [tokensListing]);
+  return (
+    <div className="bg-[#000000]/50 border-[#ffeb82] border-[1px] rounded-[20px] flex justify-center items-center py-[19px] w-full md:w-1/3 md:max-h-[600px] font-Montserrat">
+      <div className="flex flex-col justify-evenly items-center w-full gap-5">
+        <div className="flex justify-start items-center gap-3 w-full border-b-[0.5px] border-[#dcdcdc]/20 px-[10px]">
+          <div>
+            <button onClick={() => routeChange(LiquidityRoutes.LIQUIDITY_POOLS)} className="bg-transparent text-white text-[23px]">
+              <IoIosUndo />
+            </button>
+          </div>
+          <div className="flex justify-start items-start flex-col gap-3">
+            <span className="text-white text-[20px] font-Montserrat font-semibold">Import Liquidity Pool</span>
+            <span className="text-white text-[14px] font-Montserrat">Import an existing pool</span>
+          </div>
+        </div>
+        <div className="flex flex-col justify-center items-center gap-7 w-full px-4 font-Montserrat text-white">
+          <button onClick={() => setIsFirstTokensListModalVisible(true)} className="btn w-full rounded-[25px] flex justify-between items-center">
+            <div className="flex justify-between items-center gap-2">
+              <div className="avatar">
+                <div className="w-6 rounded-full">
+                  <img src={firstSelectedToken.logoURI} alt={firstSelectedToken.symbol} />
+                </div>
+              </div>
+              <span>{firstSelectedToken.symbol}</span>
+            </div>
+            <FiChevronDown />
+          </button>
+          <button className="bg-transparent text-[30px]">
+            <FiPlus />
+          </button>
+          <button onClick={() => setIsSecondTokensListModalVisible(true)} className="btn w-full rounded-[25px] flex justify-between items-center">
+            <div className="flex justify-between items-center gap-2">
+              <div className="avatar">
+                <div className="w-6 rounded-full">
+                  <img src={secondSelectedToken.logoURI} alt={secondSelectedToken.symbol} />
+                </div>
+              </div>
+              <span>{secondSelectedToken.symbol}</span>
+            </div>
+            <FiChevronDown />
+          </button>
+          <div className="flex w-full justify-center items-center">
+            {!!pairError ? (
+              <span className="text-[red]/50">{pairError.message}</span>
+            ) : (
+              <button
+                disabled={isImportLoading || _.includes(liquidityPoolsForUser, pair)}
+                onClick={addToPools}
+                className={`flex justify-center items-center bg-[#1673b9] btn py-[14px] px-[10px] rounded-[19px] text-[18px] text-white w-full ${
+                  isImportLoading ? 'loading' : ''
+                }`}
+              >
+                <span>Import</span>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+      <TokensListModal
+        isVisible={isFirstTokensListModalVisible}
+        onClose={() => setIsFirstTokensListModalVisible(false)}
+        onTokenSelected={(token) => setFirstSelectedToken(token)}
+        selectedTokens={[firstSelectedToken, secondSelectedToken]}
+      />
+      <TokensListModal
+        isVisible={isSecondTokensListModalVisible}
+        onClose={() => setIsSecondTokensListModalVisible(false)}
+        onTokenSelected={(token) => setSecondSelectedToken(token)}
+        selectedTokens={[firstSelectedToken, secondSelectedToken]}
+      />
+    </div>
+  );
+};
+
 export default function Liquidity() {
   const [route, setRoute] = useState<LiquidityRoutes>(LiquidityRoutes.LIQUIDITY_POOLS);
   return (
     <div className="w-full overflow-auto flex justify-center items-center">
-      {route === LiquidityRoutes.LIQUIDITY_POOLS && <LPRoute routeChange={() => setRoute(LiquidityRoutes.ADD_LIQUIDITY)} />}
-      {route === LiquidityRoutes.ADD_LIQUIDITY && <AddLiquidityRoute routeChange={() => setRoute(LiquidityRoutes.LIQUIDITY_POOLS)} />}
+      {route === LiquidityRoutes.LIQUIDITY_POOLS && <LPRoute routeChange={setRoute} />}
+      {route === LiquidityRoutes.ADD_LIQUIDITY && <AddLiquidityRoute routeChange={setRoute} />}
+      {route === LiquidityRoutes.FIND_OTHER_LP_TOKENS && <FindOtherLPRoute routeChange={setRoute} />}
     </div>
   );
 }

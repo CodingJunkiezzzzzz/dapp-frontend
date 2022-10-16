@@ -11,6 +11,7 @@ type APIContextType = {
   tokensListingAsDictionary: { [key: string]: ListingModel };
   liquidityPoolsForUser: Array<string>;
   importToken: (model: ListingModel) => void;
+  importPool: (pool: string) => void;
 };
 
 const APIContext = createContext({} as APIContextType);
@@ -23,6 +24,10 @@ export const APIContextProvider = ({ children }: any) => {
 
   const importToken = useCallback((model: ListingModel) => {
     if (!_.includes(tokensListing, model)) setTokensListing((models) => [...models, model]);
+  }, []);
+
+  const importPool = useCallback((pool: string) => {
+    if (!_.includes(liquidityPoolsForUser, pool)) setLiquidityPoolsForUser((pools) => [...pools, pool]);
   }, []);
 
   useEffect(() => {
@@ -46,7 +51,9 @@ export const APIContextProvider = ({ children }: any) => {
   }, [active, chainId, account]);
 
   return (
-    <APIContext.Provider value={{ tokensListing, tokensListingAsDictionary, liquidityPoolsForUser, importToken }}>{children}</APIContext.Provider>
+    <APIContext.Provider value={{ tokensListing, tokensListingAsDictionary, liquidityPoolsForUser, importToken, importPool }}>
+      {children}
+    </APIContext.Provider>
   );
 };
 

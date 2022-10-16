@@ -443,10 +443,12 @@ export default function Swap() {
                     </span>
                   </div>
                   <div className="flex justify-between w-full items-center font-poppins gap-3">
-                    <span className="text-white font-[300]">You get:</span>
+                    <span className="text-white font-[300]">
+                      You pay in {inputAmount} {firstSelectedToken.symbol}
+                    </span>
                     {/* <MdOutlineSwapHoriz className="text-white font-[400] text-[30px]" /> */}
                     <span className="text-white font-[300]">
-                      {outputAmount} {secondSelectedToken.symbol}
+                      You get {outputAmount} {secondSelectedToken.symbol}
                     </span>
                   </div>
                 </div>
